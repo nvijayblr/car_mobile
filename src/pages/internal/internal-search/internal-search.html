@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+      <ion-buttons left (click)="gotoBackPage()">
+        <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+      </ion-buttons>
+      <ion-title text-center *ngIf="showSearchFilters">{{'searchPage.searchClaim' | translate}}</ion-title>
+      <ion-title text-center *ngIf="!showSearchFilters" class="srch-result-head">{{'searchPage.searchResults' | translate}}</ion-title>
+      <ion-buttons end class="claim-button" [hidden]="!showSearchFilters">
+        <button ion-button color="primary" (click)="resetClicked()">{{'searchPage.reset' | translate}}</button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+  <ion-content padding [hidden]="!showSearchFilters"  class="bg-shade search-claim">
+      <ion-list>
+
+        <ion-item no-padding>
+          <ion-input type="text" placeholder="{{'searchPage.universalSearch' | translate}}" name="GlobalSearch" [(ngModel)]="searchFilters.GlobalSearch"></ion-input>
+        </ion-item>
+
+        <ion-row>
+          <ion-item ion-col no-padding>
+            <ion-label stacked>{{'searchPage.fromDate' | translate}}</ion-label>
+            <ion-datetime placehoder="MM/DD/YYYY" displayFormat="MM/DD/YYYY" name="ClaimInitationFromDate" [(ngModel)]="searchFilters.ClaimInitationFromDate"></ion-datetime>
+          </ion-item>
+          <ion-item ion-col no-padding>
+            <ion-label stacked>{{'searchPage.toDate' | translate}}</ion-label>
+            <ion-datetime placehoder="MM/DD/YYYY" displayFormat="MM/DD/YYYY" name="ClaimInitationToDate" [(ngModel)]="searchFilters.ClaimInitationToDate"></ion-datetime>
+          </ion-item>
+        </ion-row>
+
+        <ion-item no-padding>
+          <ion-label stacked hidden>{{'searchPage.claimsType' | translate}}</ion-label>
+          <ion-select name="ClaimType" interface="action-sheet" [(ngModel)]="searchFilters.ClaimType" cancelText="{{'common.cancel' | translate}}">
+            <ion-option value="0">{{'searchPage.claimsType' | translate}}</ion-option>
+            <ion-option *ngFor="let type of claimTypesList;" value="{{type.Id}}">{{type.Name}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item no-padding>
+          <ion-input type="text" placeholder="{{'searchPage.referenceNo' | translate}}" name="ReferenceNo" [(ngModel)]="searchFilters.ReferenceNo"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding>
+          <ion-label stacked hidden>{{'searchPage.claimStatus' | translate}}</ion-label>
+          <ion-select name="ClaimStatus" interface="action-sheet" [(ngModel)]="searchFilters.ClaimStatus" cancelText="{{'common.cancel' | translate}}">
+            <ion-option value="0">{{'searchPage.claimStatus' | translate}}</ion-option>
+            <ion-option *ngFor="let status of claimStatusList;" value="{{status.Id}}">{{status.Name}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item no-padding>
+          <ion-input type="text" placeholder="{{'searchPage.employeeName' | translate}}" name="EmployeeName" [(ngModel)]="searchFilters.EmployeeName"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-row>
+        <ion-col text-center>
+          <button ion-button round block color="primary" (click)="doClaimSearch(searchFilters)">
+            {{'searchPage.search' | translate}}
+          </button>
+        </ion-col>
+      </ion-row>
+
+  </ion-content>
+
+
+  <ion-content padding [hidden]="showSearchFilters" class="search-result-bg">
+
+    <ion-item end *ngIf="pagination.totalItems" class="no-of-recrods">
+      <ion-label ion-text color="light-gray" text-right >{{'searchPage.recordsPerPage' | translate}}</ion-label>
+      <ion-select name="PageSize" interface="action-sheet" small [(ngModel)]="searchFilters.PageSize"  (ngModelChange)="applySearch(searchFilters)" cancelText="{{'common.cancel' | translate}}">
+        <ion-option value="10">10</ion-option>
+        <ion-option value="25">25</ion-option>
+        <ion-option value="50">50</ion-option>
+        <ion-option value="100">100</ion-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-list class="search-result">
+      <ion-item *ngFor="let claim of claimsList; let i=index;" class="expand-wrapper" [ngClass]="{active: isGroupShown(i)}" (click)="toggleGroup(i)">
+        <ion-row>
+          <ion-col col-11>
+            <h2>{{claim.ReferenceNo}}</h2>
+            <p> <i class="status-{{claim.ClaimStatus}}"></i> {{claim.ClaimStatus}}</p>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon class="icon-arrow-{{isGroupShown(i) ? 'up':'down'}}" item-right name="{{isGroupShown(i) ? 'ios-arrow-dropup':'ios-arrow-dropdown'}}"> </ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row class="expandable" [ngClass]="{active: isGroupShown(i)}">
+          <ion-item>
+            <label>{{'accident.basic.injuredEmployeeName'|translate}}</label>
+            <ion-col col-12>{{claim.Employeename}}</ion-col>
+          </ion-item>
+
+          <ion-item>
+            <label>{{'accident.basic.employeeMiniCo'|translate}}</label>
+            <ion-col col-12>{{claim.EmployeeMinCo}}</ion-col>
+          </ion-item>
+
+          <ion-item text-center class="no-pad">
+            <button ion-button round block color="primary" (click)="gotoClaimPage(claim.ClaimTypeId, claim.ReferenceNo)">
+              {{'searchPage.gotoClaim' | translate}}
+            </button>
+          </ion-item>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+     
+    <ion-item *ngIf="pagination.totalItems">    
+      <pagination
+        previousText= '&lsaquo;'
+        nextText= '&rsaquo;'
+        firstText="&laquo;" lastText="&raquo;"
+        [boundaryLinks]= "true"
+        [totalItems]="pagination.totalItems"
+        [(ngModel)]="pagination.currentPage"
+        [maxSize]="pagination.maxPages"
+        [itemsPerPage]="pagination.itemsPerPage"
+        (pageChanged)="paginationChanged($event)" [hidden]="loading">
+      </pagination>
+    </ion-item>
+  </ion-content>
+ 

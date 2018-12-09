@@ -1,0 +1,212 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-buttons left (click)="gotoBackPage()">
+          <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+        </ion-buttons>
+        
+        <ion-title text-center *ngIf="!isViewMode && !isEditMode">{{'hazard.header.newClaim'|translate}}</ion-title>
+        <ion-title text-center *ngIf="isViewMode || isEditMode">{{'hazard.header.claimDetails'|translate}}</ion-title>
+        
+        <ion-buttons end class="claim-button">
+          <button ion-button color="primary" *ngIf="!isViewMode" (click)="resetClicked()">{{'common.reset'|translate}}</button>
+          <button ion-button color="primary" *ngIf="isViewMode && claimObject.ClaimStatusId!=2 && this.common.getInternalWeightage() > 20" (click)="editClaimClicked()">{{'common.edit'|translate}}</button>
+        </ion-buttons>
+    </ion-navbar>
+
+    <ion-toolbar class="claim claim-int claim-hazard-int" >
+      <ion-segment [(ngModel)]="stepNavigation" color="primary">
+        <ion-segment-button value="0">
+          <i class="badge-num">1</i>
+          {{'hazard.basic.title'|translate}}
+        </ion-segment-button>
+        <ion-segment-button value="1" [disabled]="stepsCompleted<1">
+          <i class="badge-num">2</i>
+          {{'hazard.hazard.title'|translate}}
+        </ion-segment-button>
+        <ion-segment-button value="2" [disabled]="stepsCompleted<2">
+          <i class="badge-num">3</i>
+          {{'hazard.action.title'|translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+ 
+<ion-content padding [class]="isViewMode ? 'view-claim':'edit-page'">
+
+  <form #claimForm="ngForm" autocomplete="off">
+    <div>
+
+      <!-- Basic Details -->
+      <ion-card pager auto-height [hidden]="stepNavigation!=0">
+        <ion-list ion-row>
+            <ion-item border-bottom class="heading">
+              <h3>{{'hazard.basic.title'|translate}}</h3>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'hazard.basic.referenceNo'|translate}}</ion-label>
+                <ion-input name="ReferenceNo" type="text" disabled [(ngModel)]="claimObject.ReferenceNo" placeholder="{{'hazard.basic.referenceNo'|translate}}"></ion-input>
+            </ion-item>
+            
+            <ion-col no-padding>
+              <ion-row>
+                <ion-item ion-col [color]="isSubmitted && !claimObject.ObservedDate ? 'error':''">
+                  <ion-label stacked>{{'hazard.basic.dateOfObservation'|translate}}<span class="required">*</span></ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY" placeholder="MM/DD/YYYY" name="ObservedDate" [max]="minDate" [(ngModel)]="claimObject.ObservedDate" [disabled]="isViewMode"></ion-datetime>
+                </ion-item>
+              </ion-row>
+            </ion-col>
+
+            <ion-item [color]="isSubmitted && !claimObject.EmployeeName ? 'error':''">
+                <ion-label stacked>{{'hazard.basic.employeeName'|translate}}<span class="required">*</span></ion-label>
+                <ion-input name="EmployeeName" type="text" [(ngModel)]="claimObject.EmployeeName" placeholder="{{'hazard.basic.employeeName'|translate}}" required [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'hazard.basic.employeeNo'|translate}}</ion-label>
+                <ion-input name="EmployeeNo" type="text" [(ngModel)]="claimObject.EmployeeNo" placeholder="{{'hazard.basic.employeeNo'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'hazard.basic.employeeMiniCo'|translate}}</ion-label>
+                <ion-input name="EmplyeeMinCo" type="text" [(ngModel)]="claimObject.EmplyeeMinCo" placeholder="{{'hazard.basic.employeeMiniCo'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="claimObject.ReferenceNo">
+              <ion-label stacked>{{'hazard.basic.claimStatus'|translate}}</ion-label>
+              <ion-select name="ClaimStatusId" interface="action-sheet" [(ngModel)]="claimObject.ClaimStatusId" required disabled>
+                <ion-option *ngFor="let item of claimStatusList;" value="{{item.Id}}">{{item.Name}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+        </ion-list>
+      </ion-card>
+      
+      <!-- Hazard Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=1">
+        <ion-list>
+            <ion-item class="heading">
+              <h3>{{'hazard.hazard.title'|translate}}</h3>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.HazardDetail.Location ? 'error':''">
+                <ion-label stacked>{{'hazard.hazard.location'|translate}}<span class="required">*</span></ion-label>
+                <ion-input name="Location" type="text" [(ngModel)]="claimObject.HazardDetail.Location" placeholder="{{'hazard.hazard.location'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.HazardDetail.HazardNatureId ? 'error':''">
+                <ion-label stacked>{{'hazard.hazard.natureOfHazard'|translate}}<span class="required">*</span></ion-label>
+                <ion-select name="HazardNatureId" interface="action-sheet" [(ngModel)]="claimObject.HazardDetail.HazardNatureId" required [disabled]="isViewMode">
+                  <ion-option value="">{{'common.select'|translate}}</ion-option>
+                  <ion-option *ngFor="let item of hazardsNaturesList;" value="{{item.Id}}">{{item.Name}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.HazardDetail.Description ? 'error':''">
+                <ion-label stacked>{{'hazard.hazard.description'|translate}}<span class="required">*</span></ion-label>
+                <ion-textarea name="Description" type="text" [(ngModel)]="claimObject.HazardDetail.Description" placeholder="{{'hazard.hazard.description'|translate}}" required maxlength="1024" [disabled]="isViewMode"></ion-textarea>
+            </ion-item>
+
+        </ion-list>
+      </ion-card>
+
+      <!-- Injury Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=2">
+        <ion-list>
+            <ion-item  class="heading">
+              <h3>{{'hazard.action.title'|translate}}</h3>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.CorrectiveAction.ActionRequested ? 'error':''">
+                <ion-label stacked>{{'hazard.action.correctiveActionRequested'|translate}}<span class="required">*</span></ion-label>
+                <ion-input name="ActionRequested" type="text" [(ngModel)]="claimObject.CorrectiveAction.ActionRequested" placeholder="{{'hazard.action.correctiveActionRequested'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item ion-col [color]="isSubmitted && !claimObject.CorrectiveAction.SendTo ? 'error':''">
+                <ion-label stacked>{{'hazard.action.sendTo'|translate}}<span class="required">*</span></ion-label>
+                <ion-select name="SendTo" interface="action-sheet" [(ngModel)]="claimObject.CorrectiveAction.SendTo" required [disabled]="isViewMode">
+                  <ion-option value="">{{'common.select'|translate}}</ion-option>
+                <ion-option *ngFor="let item of sendToList;" value="{{item.Id}}">{{item.Name}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item ion-col [color]="isSubmitted && !claimObject.CorrectiveAction.EstimatedPriority ? 'error':''">
+                <ion-label stacked>{{'hazard.action.estimatedPriority'|translate}}<span class="required">*</span></ion-label>
+                <ion-select name="EstimatedPriority" interface="action-sheet" [(ngModel)]="claimObject.CorrectiveAction.EstimatedPriority" required [disabled]="isViewMode">
+                  <ion-option value="">{{'common.select'|translate}}</ion-option>
+                <ion-option *ngFor="let item of hazardPriorityList;" value="{{item.Id}}">{{item.Name}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'hazard.action.sendAdditionalEmail'|translate}}</ion-label>
+                <ion-textarea name="EmailTo" type="text" [(ngModel)]="claimObject.CorrectiveAction.EmailTo" placeholder="{{'hazard.action.multipleEmail'|translate}}" maxlength="1000" multiple [disabled]="isViewMode"></ion-textarea>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'hazard.action.carClosedBy'|translate}}</ion-label>
+                <ion-input name="CarClosedBy" type="text" [(ngModel)]="claimObject.CorrectiveAction.CarClosedBy" placeholder="{{'hazard.action.carClosedBy'|translate}}" disabled></ion-input>
+            </ion-item>
+            
+            <ion-item>
+                <ion-label stacked>{{'hazard.action.carClosedDate'|translate}}</ion-label>
+                <ion-input name="CarClosedDate" type="text" [(ngModel)]="claimObject.CorrectiveAction.CarClosedDate" placeholder="MM/DD/YYYY" disabled></ion-input>
+            </ion-item>
+            
+            <ion-item>
+                <ion-label stacked>{{'hazard.action.attachPhoto'|translate}}</ion-label>
+            </ion-item>
+
+            <ion-row>
+              <ion-col col-8 no-padding>
+                <ion-buttons ion-item>
+                  <input type="file" class="custom-file-input" id="imageAttachment" name="imageAttachment" #imageAttachment ng2FileSelect [uploader]="imageUploader"  multiple accept="image/*" [disabled]="isViewMode" />
+                  <button round outline ion-button small block class="btn btn-primary custom-file" (click)="imageAttachment.click()" [disabled]="isViewMode">
+                    {{'hazard.action.browse'|translate}}
+                  </button>
+                </ion-buttons>
+              </ion-col>
+              <ion-col col-4 no-padding>
+                <ion-buttons ion-item>
+                    <button ion-button small light color="light" class="btn-camera" (click)="onInitAttachmentCamera($event)" [disabled]="isViewMode">
+                        <ion-icon color="primary" class="icon-camera"></ion-icon>
+                    </button>
+                </ion-buttons>
+              </ion-col>
+            </ion-row>
+            <ion-item *ngIf="imageUploaderDetail.length || cameraUploader.length">
+                <ion-label stacked 
+                (tap)="showAttachmentdModal(imageUploaderDetail, imageUploader.queue, cameraUploader, claimObject.CorrectiveAction.Attachment, 'Internal')" >
+                {{imageUploaderDetail.length}} {{'hazard.action.fileAdded'|translate}}
+                <ion-icon class="icon-eye" no-padding > </ion-icon>
+              </ion-label>
+            </ion-item>
+          
+
+        </ion-list>
+      </ion-card>
+
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+      <ion-buttons  left *ngIf="stepNavigation!=0">
+        <button solid ion-button small round color="primary" (click)="gotoPreviousSlide()"><ion-icon class="icon-arrow-left"></ion-icon> {{'common.prev'|translate}}</button>
+      </ion-buttons>
+      
+      <ion-title text-center *ngIf="!isViewMode">
+        <button ion-button small outline color="primary" (click)="draftOrSubmitClaim(claimObject, '1')">{{'common.saveasDraft'|translate}}</button>
+      </ion-title>
+
+      <ion-buttons right *ngIf="stepNavigation==2 && !isViewMode">
+        <button solid ion-button small round color="primary" (click)="validateAndSubmitClaim(claimObject, 'submit')">{{'common.submit'|translate}}</button>
+      </ion-buttons>
+
+      <ion-buttons right *ngIf="stepNavigation!=2">
+        <button solid ion-button small round color="primary" (click)="gotoNextSlide(claimObject)">{{'common.next'|translate}} <ion-icon class="icon-arrow-right"></ion-icon></button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

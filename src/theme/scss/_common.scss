@@ -1,0 +1,75 @@
+.bg-pink{
+    background-color: #f659a1 !important;
+}
+.bg-shade{
+    background-color: #f0f5f9 !important;
+}
+
+
+ion-app{
+    font-family: 'Arial MT' !important;
+}
+.bar-button-md ion-icon{
+    font-weight: 600;
+}
+.view-claim {
+	background: #f8f8f8;
+}
+.toast-container{
+    background: #fa2951;
+}
+.success .toast-container{
+    background: #41c353;
+}
+
+.warning .toast-container{
+    background: #ff9000;
+}
+
+.error .toast-container{
+    background: #fa2951;
+}
+.select-text {
+	color: #312857;
+}
+
+
+ion-backdrop {
+opacity: .5 !important;
+}
+
+
+.item-md {
+    padding-right: 15px !important;
+}
+.item-ios {
+   padding-right: 15px !important; 
+}
+
+.toolbar-ios {
+        min-height: 58px !important;
+}
+
+.toolbar-title-ios {
+    padding-top: 26px;
+}
+.platform-ios ion-header .bar-button {
+ padding-top: 20px;
+}
+.footer-ios .toolbar-title-ios {
+    padding-top: 0px;
+}
+.unit-span {
+    float: right;
+    position: relative;
+    bottom: 25px;
+    margin: 0 20px 0 0;
+    color: #312857;
+}
+.platform-ios .header-ios {
+        position: fixed;
+}
+.header-ios .icon-ios {
+    position: relative;
+    z-index: 99;
+}

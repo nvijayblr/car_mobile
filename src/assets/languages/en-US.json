@@ -1,0 +1,175 @@
+{
+    "common": {
+        "select": "Select",
+        "cancel": "Cancel",
+        "prev":"Prev",
+        "saveasDraft":"Save as Draft",
+        "submit":"Submit",
+        "next":"Next",
+        "resetFormModal":"Reset will clear all values entered before saving. Do you want to Continue?",
+        "yes":"Yes",
+        "no":"No",
+        "close": "Close",
+        "delete": "Delete",
+        "reset":"Reset",
+        "edit":"Edit",
+        "logout": "Logout",
+        "deleteAttachment":"Attachment deleted successfully.",
+        "networkError": "Oops! something went wrong.",
+        "currentLanguage":"English"
+    },
+    "header": {
+        "applicationName": "Claim Processing Application",
+        "logoutTitle": "Logout",
+        "logoutMessage": "Are you sure you want to logout?",
+        "yesLable": "Yes",
+        "noLabel": "No",
+        "claimsMenu": "CLAIMS",
+        "capaMenu": "CAPA",
+        "selectModule":"Select Module"
+    },
+    "landingPage": {
+        "externalMessage": "Create, View & Manage different types of claims like Consumer, Customer & Complaints etc",
+        "internalMessage": "Create, View & Manage Hazards and Accidents declaration and Intimation",
+        "externalButton": "External",
+        "internalButton": "Internal"
+    },
+    "dashboard":{
+        "pageHead":"Internal Dashboard",
+        "createNew":"Create New",
+        "searchFor":"Search for",
+        "claim":"Claim",
+        "recentClaims":"Recent Claims",
+        "selectClaimType": "Select Claim Type",
+        "accidentDeclaration": "Accident Declaration",
+        "hazardIdentification": "Hazard Identification"
+    },
+    "searchPage": {
+        "searchClaim": "Search Claim",
+        "searchResults": "Search Results",
+        "reset": "Reset",
+        "universalSearch": "Universal Search",
+        "fromDate": "From Date",
+        "toDate": "To Date",
+        "claimsType": "Claims Type",
+        "referenceNo": "Reference Number",
+        "claimStatus": "Claim Status",
+        "search": "Search",
+        "employeeName": "Employee Name",
+        "recordsPerPage":"Records per page",
+        "gotoClaim":"Go To Claim",
+        "noRecordsFound": "No Records Found",
+        "toDateGreaterThanFrom": "Initiation To Date must be greater than or equal to Initiation From Date"
+    },
+    "accident": {
+        "header": {
+            "newClaim":"New Claim",
+            "claimDetails":"Claim Details"
+        },
+        "basic": {
+            "title": " Basic Details",
+            "referenceNo": "Reference Number",
+            "dateOfIncident": "Date of Incident",
+            "timeOfIncident": "Time Of Incident",
+            "injuredEmployeeName": "Name of Injured Employee",
+            "employeeNo": "Employee Number",
+            "employementType": "Type of Employment",
+            "employeeMiniCo": "Employee Mini-Co.",
+            "claimStatus": "Claim Status"
+        },
+        "incident": {
+            "title": "Incident Details",
+            "sendTo": "Send to",
+            "reportedBy": "Incident Reported By",
+            "location": "Precise location of the Incident",
+            "description": "Description of Incident",
+            "immediateActions": "Immediate actions carried out at the scene of the incident",
+            "sendAdditionalEmail": "Send Additional Email to",
+            "multipleEmail": "Enter multiple email ids seperated by comma"
+        },
+        "injury": {
+            "title": "Injury Details",
+            "injuryNature": "Nature of Injury",
+            "injuryLocation": "Location of Injury",
+            "ppeWearingCorrect": "Was the victim wearing correct PPE? If so, what?",
+            "carClosedBy": "CAR Closed By",
+            "carClosedDate": "CAR Closed Date",
+            "attachPhoto": "Attach Photo",
+            "fileAdded": "File Added",
+            "browse":"Browse",
+            "noImage":"No Images selected",
+            "fileNames":"File names",
+            "description":"Description"
+        },
+        "validation": {
+            "dateOfIncident": "Please choose Incident Date.",
+            "timeOfIncident": "Please choose Incident Time.",
+            "incidentDateTime": "Incident Date and Time should not greater than current date and time.",
+            "employeeName": "Please enter Employee name.",
+            "employeeNo": "Please enter Employee No.",
+            "employementType": "Please select Type of Employment.",
+            "sendTo": "Please choose Sent to.",
+            "reportedBy": "Please enter Incident Reported By.",
+            "location": "Please enter Precise location of the Incident.",
+            "description": "Please enter Description of Incident.",
+            "validEmail": "Please enter valid email Ids.",
+            "injuryNature": "Please choose Nature of Injury.",
+            "injuryLocation": "Please choose Location of Injury.",
+            "dateOfIncidentToaster": "Date of Incident should be less than or equal to CAR closed date.",
+            "claim":"Claim ",
+            "saveSuccess":" Saved Successfully.",
+            "updateSuccess":" Updated Successfully.",
+            "submitSuccess":" Submitted Successfully."
+        }
+    },
+    "hazard": {
+        "header": {
+            "newClaim":"New Claim",
+            "claimDetails":"Claim Details"
+        },
+        "basic": {
+            "title": " Basic Details",
+            "referenceNo": "Reference Number",
+            "dateOfObservation": "Date of Observation",
+            "employeeName": "Name of Employee Requesting Action",
+            "employeeNo": "Employee No.",
+            "employeeMiniCo": "Employee Mini-Co.",
+            "claimStatus": "Claim Status"
+        },
+        "hazard": {
+            "title": "Hazard Details",
+            "location": "Precise location of the Incident",
+            "natureOfHazard": "Nature of Hazard",
+            "description": "Description of Hazard"
+        },
+        "action": {
+            "title": "Corrective Action",
+            "correctiveActionRequested": "Corrective Action Requested",
+            "sendTo": "Send to",
+            "estimatedPriority": "Estimated Priority",
+            "sendAdditionalEmail": "Send Additional Email to",
+            "multipleEmail": "Enter multiple email ids seperated by comma",
+            "carClosedBy": "CAR Closed By",
+            "carClosedDate": "CAR Closed Date",
+            "attachPhoto": "Attach Photo",
+            "fileAdded": "File Added",
+            "browse":"Browse"
+        },
+        "validation": {
+            "dateOfObservation": "Please choose Observed Date.",
+            "employeeName": "Please enter Employee name.",
+            "location": "Please enter Precise location of the Incident.",
+            "natureOfHazard": "Please choose Nature of Hazard.",
+            "description": "Please enter Description of Hazard.",
+            "correctiveActionRequested": "Please enter Corrective Action Requested.",
+            "sendTo": "Please choose Sent to.",
+            "estimatedPriority": "Please choose Estimated Priority.",
+            "validEmail": "Please enter valid email Ids.",
+            "dateOfIncidentToaster": "Date of Incident should be less than or equal to CAR closed date.",
+            "claim":"Claim ",
+            "saveSuccess":" Saved Successfully.",
+            "updateSuccess":" Updated Successfully.",
+            "submitSuccess":" Submitted Successfully."
+        }
+    }
+}

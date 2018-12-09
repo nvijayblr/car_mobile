@@ -1,0 +1,600 @@
+<ion-header>
+	  <ion-navbar hideBackButton>
+	      <ion-buttons left (click)="gotoBackPage()">
+	        <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+	      </ion-buttons>
+				
+				<ion-title text-center *ngIf="!isViewMode && !isEditMode">New Claim</ion-title>
+				<ion-title text-center *ngIf="isViewMode || isEditMode">Claim Details</ion-title>
+				
+				<ion-buttons end class="claim-button">
+					<button ion-button color="primary" *ngIf="!isViewMode" (click)="resetClicked()">Reset</button>
+        	<button ion-button color="primary" *ngIf="isViewMode && claimObject.ClaimDetails.ClaimStatusID != 3  && claimObject.ClaimDetails.ClaimStatusID != 7  && claimObject.ClaimDetails.ClaimStatusID != 8 && this.common.getExternalWeightage() > 20" (click)="editClaimClicked()">Edit</button>
+				</ion-buttons>
+		</ion-navbar>
+
+<!--
+ClaimStatusID
+3 - Open
+7 - Reviewed
+6 - Under Review
+-->
+
+    <ion-toolbar class="claim" >
+		  <ion-segment [(ngModel)]="stepNavigation" color="primary">
+		    <ion-segment-button value="0">
+					<i class="badge-num">1</i>
+		      Basic Details
+		    </ion-segment-button>
+		    <ion-segment-button value="1" [disabled]="stepsCompleted<1">
+					<i class="badge-num">2</i>
+		      Customer Details
+		    </ion-segment-button>
+		    <ion-segment-button value="2" [disabled]="stepsCompleted<2">
+					<i class="badge-num">3</i>
+		      Product Details
+		    </ion-segment-button>
+		    <ion-segment-button value="3" [disabled]="stepsCompleted<3">
+						<i class="badge-num">4</i>
+		      Claim Details
+		    </ion-segment-button>
+		    <ion-segment-button value="4" [disabled]="stepsCompleted<4">
+					<i class="badge-num">5</i>
+		      Additional Information
+		    </ion-segment-button>
+		  </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+ 
+<ion-content padding [class]="isViewMode ? 'view-claim':'edit-page'">
+
+  <form #claimForm="ngForm" autocomplete="off">
+    <div>
+
+    	<!-- Basic Details -->
+			<ion-card pager auto-height [hidden]="stepNavigation!=0">
+			 	<ion-list ion-row>
+		        <ion-item border-bottom class="heading">
+		        	<h3>Basic Details</h3>
+		        </ion-item>
+
+		        <ion-item>
+		            <ion-label stacked>Customer Complaint Number</ion-label>
+		            <ion-input name="ComplaintNumber" type="text" disabled [(ngModel)]="claimObject.ComplaintNumber" placeholder="Customer Complaint Number"></ion-input>
+						</ion-item>
+						
+		        <ion-item [color]="isSubmitted && claimObject.ClaimDetails.SBUId=='0' ? 'error':''">
+		            <ion-label stacked>SBU<span class="required">*</span></ion-label>
+							  <ion-select name="SBUId" interface="action-sheet" [(ngModel)]="claimObject.ClaimDetails.SBUId" required (ngModelChange)="populateCountry(claimObject.ClaimDetails.SBUId)" [disabled]="isViewMode">
+						    	<ion-option value="0">Select SBU</ion-option>
+						    	<ion-option *ngFor="let sbu of dropDownData.SBUList;" value="{{sbu.SBUId}}">{{sbu.SBUName}}</ion-option>
+							  </ion-select>
+						</ion-item>
+						
+		        <ion-item >
+		            <ion-label stacked>Initiator</ion-label>
+		            <ion-input name="InitiatorName" type="text" [(ngModel)]="claimObject.InitiatorDetails.InitiatorName" placeholder="Initiator Name" disabled></ion-input>
+		        </ion-item>
+
+					  <ion-row>
+							<ion-item ion-col>
+								<ion-label stacked>Initiator Phone</ion-label>
+								<ion-input name="InitiatorPhone" type="text" [(ngModel)]="claimObject.InitiatorDetails.InitiatorPhone" placeholder="000000000000" [disabled]="isViewMode" maxlength="12"></ion-input>
+							</ion-item>
+							<ion-item ion-col>
+								<ion-label stacked>Extn</ion-label>
+								<ion-input name="Extension" type="text" [(ngModel)]="claimObject.InitiatorDetails.Extension"  placeholder="x000" maxlength="6" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+						</ion-row>
+						
+						<ion-col no-padding>
+							<ion-row>
+								<ion-item ion-col>
+									<ion-label stacked>Created Date</ion-label>
+									<ion-datetime displayFormat="MM/DD/YYYY" placeholder="MM/DD/YYYY" name="CreatedDate" [min]="minDate" [(ngModel)]="claimObject.ClaimDetails.CreatedDate" disabled></ion-datetime>
+								</ion-item>
+								<ion-item ion-col>
+									<ion-label stacked>Closed Date</ion-label>
+									<ion-datetime displayFormat="MM/DD/YYYY" placeholder="MM/DD/YYYY" name="ClosedDate" [min]="minDate"[(ngModel)]="claimObject.ClaimDetails.ClosedDate" disabled></ion-datetime>
+								</ion-item>
+							</ion-row>
+						</ion-col>
+
+		        <ion-item >
+		            <ion-label stacked>PO No.</ion-label>
+		            <ion-input name="PONumber" type="text" [(ngModel)]="claimObject.ClaimDetails.PONumber"  placeholder="Enter multiple PO No. seperated by comma" maxlength="110" (ionBlur)="invFormatValidate(claimObject.ClaimDetails)" [disabled]="isViewMode" ></ion-input>
+                <!-- Popover Icon -->
+                <button ion-button clear color="dark" type="button" item-right *ngIf="claimObject.ClaimDetails.PONumber.length>35" (click)="presentPopover(claimObject.ClaimDetails.PONumber)">...</button>
+						</ion-item>
+						
+					  <ion-item  [color]="isSubmitted && claimObject.ProductDetails.ComplaintCategoryID=='0' ? 'error':''">
+					  	<ion-label stacked>Complaint Category<span class="required">*</span></ion-label>
+						  <ion-select name="ComplaintCategoryID" interface="action-sheet" [(ngModel)]="claimObject.ProductDetails.ComplaintCategoryID" required [disabled]="isViewMode">
+					    	<ion-option value="0">Select</ion-option>
+					    	<ion-option *ngFor="let category of dropDownData.ComplaintCategoryList;" value="{{category.ComplaintCategoryID}}">{{category.ComplaintCategory}}</ion-option>
+						  </ion-select>
+					  </ion-item>
+
+		        <ion-item >
+		            <ion-label stacked>Invoice Number</ion-label>
+		            <ion-input name="InvoiceNumber" type="text" [(ngModel)]="claimObject.ClaimDetails.InvoiceNumber" placeholder="Enter multiple InvoiceNo seperated by comma" (ionBlur)="invFormatValidate(claimObject.ClaimDetails)" [disabled]="isViewMode"></ion-input>
+
+                <!-- Search Icon -->
+                <button ion-button clear color="dark" type="button" item-right (click)="invoiceSearchClick(claimObject.ClaimDetails.InvoiceNumber)" *ngIf="(claimObject.ClaimDetails.InvoiceNumber).indexOf(',') == -1 && claimObject.ClaimDetails.InvoiceNumber.length<=35" [disabled]="isViewMode"> <ion-icon class="icon-search" no-padding > </ion-icon> </button>
+
+                <!-- Popover Icon -->
+                <button ion-button clear color="dark" type="button" item-right [disabled]="isViewMode" *ngIf="(claimObject.ClaimDetails.InvoiceNumber).indexOf(',') >= 0 || claimObject.ClaimDetails.InvoiceNumber.length>35" (click)="presentPopover(claimObject.ClaimDetails.InvoiceNumber)">...</button>
+						</ion-item>
+						
+						
+		        <ion-item >
+		            <ion-label stacked>Invoice Value</ion-label>
+		            <ion-input name="InvoiceValue" type="text" [(ngModel)]="claimObject.ClaimDetails.InvoiceValue" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onPaste="return false" disabled></ion-input>
+		        </ion-item>
+
+		        <ion-item >
+		            <ion-label stacked>Currency</ion-label>
+		            <ion-input name="InvoiceCurrency" type="text" [(ngModel)]="claimObject.ClaimDetails.InvoiceCurrency" maxlength="10" disabled></ion-input>
+		        </ion-item>
+
+		        <ion-item  [color]="isSubmitted && claimObject.CustomerDetails.ModeOfComplaintID=='0' ? 'error':''">
+		            <ion-label stacked>Mode of Complaint<span class="required">*</span></ion-label>
+							  <ion-select name="ModeOfComplaintID" interface="action-sheet" [(ngModel)]="claimObject.CustomerDetails.ModeOfComplaintID" required [disabled]="isViewMode">
+						    	<ion-option value="0">Select</ion-option>
+						    	<ion-option *ngFor="let mode of dropDownData.ModeOfComplaintList;" value="{{mode.ModeofComplaintID}}">{{mode.ModeofComplaint}}</ion-option>
+							  </ion-select>
+		        </ion-item>
+
+				</ion-list>
+      </ion-card>
+			
+			<!-- Customer Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=1">
+			 	<ion-list>
+		        <ion-item class="heading">
+		        	<h3>Customer Details</h3>
+		        </ion-item>
+
+		        <ion-item [color]="isSubmitted && !claimObject.CustomerDetails.CustomerName ? 'error':''">
+		            <ion-label stacked>Name of Customer<span class="required">*</span></ion-label>
+		            <ion-input name="CustomerName" type="text" [(ngModel)]="claimObject.CustomerDetails.CustomerName" placeholder="Name of Customer" required [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+					  <ion-row>
+							<ion-item ion-col [color]="isSubmitted && !claimObject.CustomerDetails.CustomerNumber ? 'error':''">
+									<ion-label stacked>Customer Number<span class="required">*</span></ion-label>
+									<ion-input name="CustomerNumber" type="text" [(ngModel)]="claimObject.CustomerDetails.CustomerNumber" placeholder="Customer No." maxlength="10" required [disabled]="isViewMode"></ion-input>
+							</ion-item>
+							<ion-item ion-col>
+								<ion-label stacked>Country</ion-label>
+									<ion-select name="CountryID" interface="action-sheet" [(ngModel)]="claimObject.CustomerDetails.CountryID" disabled>
+										<ion-option value="">Country</ion-option>
+										<ion-option *ngFor="let country of dropDownData.Country;" value="{{country.CountryID}}">{{country.CountryName}}</ion-option>
+									</ion-select>
+							</ion-item>
+					  </ion-row>
+
+		        <ion-item [color]="isSubmitted && claimObject.CustomerDetails.DistributionChannelID=='0' ? 'error':''">
+		            <ion-label stacked>Distribution Channel<span class="required">*</span></ion-label>
+							  <ion-select name="DistributionChannelID" interface="action-sheet" [(ngModel)]="claimObject.CustomerDetails.DistributionChannelID" required [disabled]="isViewMode">
+						    	<ion-option value="0">Select</ion-option>
+						    	<ion-option *ngFor="let channel of dropDownData.DistributionChannelList;" value="{{channel.DistributionChannelID}}">{{channel.DistributionChannel}}</ion-option>
+							  </ion-select>
+		        </ion-item>
+
+		        <ion-item [color]="isSubmitted && !claimObject.CustomerDetails.ContactPerson ? 'error':''">
+		            <ion-label stacked>Contact Person<span class="required">*</span></ion-label>
+		            <ion-input name="ContactPerson" type="text" [(ngModel)]="claimObject.CustomerDetails.ContactPerson" placeholder="Contact Person" required [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+		        <ion-item>
+		            <ion-label stacked>Name of Final Customer</ion-label>
+		            <ion-input name="FinalCustomerName" type="text" [(ngModel)]="claimObject.CustomerDetails.FinalCustomerName" placeholder="Name of Final Customer" [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+					  <ion-row>
+							<ion-item ion-col>
+									<ion-label stacked>Customer Phone</ion-label>
+									<ion-input name="CustomerPhone" type="text" [(ngModel)]="claimObject.CustomerDetails.CustomerPhone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="000000000000" maxlength="12" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+							<ion-item ion-col>
+								<ion-label stacked>Extn</ion-label>
+									<ion-input name="Extn" type="text" [(ngModel)]="claimObject.CustomerDetails.Extn" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="x000" maxlength="6" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+					  </ion-row>
+
+		        <ion-item [color]="isSubmitted && claimObject.CustomerDetails.Email && !emailPattern.test(claimObject.CustomerDetails.Email) ? 'error':''">
+		            <ion-label stacked>Customer Email</ion-label>
+		            <ion-input name="Email" type="email" [(ngModel)]="claimObject.CustomerDetails.Email" placeholder="Customer Email" [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+				</ion-list>
+      </ion-card>
+
+			<!-- Product Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=2">
+			 	<ion-list>
+		        <ion-item  class="heading">
+		        	<h3>Product Details</h3>
+		        </ion-item>
+
+		        <ion-item [color]="isSubmitted && claimObject.ProductDetails.BrandID=='0' ? 'error':''">
+		            <ion-label stacked>Brand<span class="required">*</span></ion-label>
+							  <ion-select name="BrandID" interface="action-sheet" [(ngModel)]="claimObject.ProductDetails.BrandID" required [disabled]="isViewMode">
+						    	<ion-option value="0">Brand</ion-option>
+						    	<ion-option *ngFor="let brand of dropDownData.BrandList;" value="{{brand.BrandID}}">{{brand.BrandName}}</ion-option>
+							  </ion-select>
+		        </ion-item>
+
+		        <ion-item>
+		            <ion-label stacked>Customer SKU No</ion-label>
+		            <ion-input name="SKUNumber" type="text" [(ngModel)]="claimObject.ProductDetails.SKUNumber" placeholder="SKU No." [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+		        <ion-item [color]="isSubmitted && !claimObject.ProductDetails.InternalSKU ? 'error':''">
+		            <ion-label stacked>Internal SKU No.<span class="required">*</span></ion-label>
+		            <ion-input name="InternalSKU" type="text" [(ngModel)]="claimObject.ProductDetails.InternalSKU" placeholder="SKU No." required [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+		        <ion-item [color]="isSubmitted && !claimObject.ProductDetails.ProductDescription ? 'error':''">
+		            <ion-label stacked>Product Description<span class="required">*</span></ion-label>
+		            <ion-input name="ProductDescription" type="text" [(ngModel)]="claimObject.ProductDetails.ProductDescription" placeholder="Product Description" required [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+		        <ion-item>
+		            <ion-label stacked>Manufactured By</ion-label>
+		            <ion-input name="ManufacturedBy" type="text" [(ngModel)]="claimObject.ProductDetails.ManufacturedBy" placeholder="Manufactured By" [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+		        
+		        <ion-item>
+		            <ion-label stacked>Delivery No.</ion-label>
+		            <ion-input name="DeliveryNumber" type="text" [(ngModel)]="claimObject.ProductDetails.DeliveryNumber" placeholder="Delivery No." onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10" [disabled]="isViewMode"></ion-input>
+		        </ion-item>
+
+					  <ion-row>
+							<ion-item ion-col [color]="isSubmitted && claimObject.ProductDetails.NoOfDeliveredItems==='' ? 'error':''">
+									<ion-label stacked>No of delivered items<span class="required">*</span></ion-label>
+									<ion-input name="NoOfDeliveredItems" type="text" [(ngModel)]="claimObject.ProductDetails.NoOfDeliveredItems" placeholder="No. of delivered Items" maxlength="10" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' [disabled]="isViewMode"></ion-input>
+							</ion-item>
+							<ion-item ion-col [color]="isSubmitted && (claimObject.ProductDetails.NoOfDefectedItems === '' || validateDefectiveItems(claimObject.ProductDetails.NoOfDeliveredItems, claimObject.ProductDetails.NoOfDefectedItems)) ? 'error':''">
+								<ion-label stacked>No of defective items<span class="required">*</span></ion-label>
+									<ion-input name="NoOfDefectedItems" type="text" [(ngModel)]="claimObject.ProductDetails.NoOfDefectedItems" placeholder="No. of defecteve Items" maxlength="10" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' [disabled]="isViewMode"></ion-input>
+							</ion-item>
+					  </ion-row>
+
+					  <ion-item>
+					  	<ion-label stacked>Delivery Date</ion-label>
+						  <ion-datetime displayFormat="MM/DD/YYYY" placeholder="MM/DD/YYYY" name="DeliveryDate" [(ngModel)]="claimObject.ProductDetails.DeliveryDate" [disabled]="isViewMode"></ion-datetime>
+					  </ion-item>
+
+		        <ion-item>
+		            <ion-label stacked>Drawing Number &amp; Rev (<i>If Available</i>)</ion-label>
+		            <ion-input name="DrawingNumberRev" type="text" [(ngModel)]="claimObject.ProductDetails.DrawingNumberRev" [disabled]="isViewMode"></ion-input>
+						</ion-item>
+						
+						<ion-item>
+								<ion-label stacked>Pallet Ticket (<i>If Available</i>)</ion-label>
+						</ion-item>
+
+						<!-- Image Browser --><!-- Camera -->
+						<ion-row>
+							<ion-col col-8 no-padding>
+								<ion-buttons ion-item>
+                  <input type="file" class="custom-file-input" id="palletTicket" name="palletTicket" #palletTicket ng2FileSelect [uploader]="uploaderPalletTicket"  multiple accept="image/*" [disabled]="isViewMode" />
+									<button round outline ion-button small block class="btn btn-primary custom-file" (click)="palletTicket.click()" [disabled]="isViewMode">
+										Browse
+									</button>
+								</ion-buttons>
+							</ion-col>
+							<ion-col col-4 no-padding>
+								<ion-buttons ion-item>
+										<button ion-button small light color="light" class="btn-camera" (click)="onInitPalletCamera($event)" [disabled]="isViewMode">
+												<ion-icon color="primary" class="icon-camera"></ion-icon>
+										</button>
+								</ion-buttons>
+							</ion-col>
+						</ion-row>
+            <ion-item *ngIf="palletTicketFileUploadDetail.length || cameraUploaderPalletTicket.length">
+								<ion-label stacked 
+								(tap)="showAttachmentdModal(palletTicketFileUploadDetail, uploaderPalletTicket.queue, cameraUploaderPalletTicket, claimObject.PalletTicketAttachments, 'palletKey')" >
+								{{palletTicketFileUploadDetail.length}} Files Added
+								<ion-icon class="icon-eye" no-padding > </ion-icon>
+							</ion-label>
+						</ion-item>
+					<!-- End Image Browser / Camera -->
+					
+
+		        <ion-item>
+		            <ion-label stacked>Master Carton Barcode (<i>If Available</i>)</ion-label>
+						</ion-item>
+						
+						<!-- Image Browser --><!-- Camera -->
+						<ion-row>
+							<ion-col no-padding col-8>
+								<ion-buttons ion-item>
+                  <input type="file" class="custom-file-input" id="cortonTicket" name="cortonTicket" #cortonTicket ng2FileSelect [uploader]="uploadermasterCartonBarcode"  multiple accept="image/*"  [disabled]="isViewMode" />
+									<button ion-button block round outline small class="btn btn-primary custom-file" (click)="cortonTicket.click()" [disabled]="isViewMode">
+										Browse
+									</button>
+								</ion-buttons>
+							</ion-col>
+							<ion-col no-padding col-4>
+								<ion-buttons ion-item>
+										<button ion-button small color="light" class="btn-camera" (click)="onInitCartonCamera($event)" [disabled]="isViewMode">
+												<ion-icon color="primary" class="icon-camera"></ion-icon>
+										</button>
+								</ion-buttons>
+							</ion-col>
+						</ion-row>
+
+            <ion-item *ngIf="masterCartonBarcodeFileUploadDetail.length || cameraUploaderCartonTicket.length">
+		            <ion-label stacked
+		            	(tap)="showAttachmentdModal(masterCartonBarcodeFileUploadDetail, uploadermasterCartonBarcode.queue, cameraUploaderCartonTicket, claimObject.MasterCartonBarcodeAttachments, 'mcbKey')" >
+		            	{{masterCartonBarcodeFileUploadDetail.length}} Files Added
+		            	<ion-icon class="icon-eye" no-padding > </ion-icon>
+		            </ion-label>
+		        </ion-item>
+		        <!-- End Image Browser / Camera -->
+
+
+				</ion-list>
+      </ion-card>
+
+			<!-- Claim Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=3">
+			 	<ion-list>
+		        <ion-item class="heading">
+		        	<h3>Claim Details</h3>
+		        </ion-item>
+		        
+		        <ion-item>
+		            <ion-label stacked>At what stage the problems were detected?</ion-label>
+		            <ion-textarea name="ComplaintStage" placeholder="Description" [(ngModel)]="claimObject.ActionRequested.ComplaintStage" [disabled]="isViewMode"></ion-textarea>
+		        </ion-item>
+		        
+		        <ion-item [color]="isSubmitted && !claimObject.ActionRequested.ComplaintDesc ? 'error':''">
+		            <ion-label stacked>Complaint Description<span class="required">*</span></ion-label>
+		            <ion-textarea name="ComplaintDesc" placeholder="Description" [(ngModel)]="claimObject.ActionRequested.ComplaintDesc" required [disabled]="isViewMode"></ion-textarea>
+		        </ion-item>
+
+					  <ion-item>
+					    <ion-label>Defective sample received?</ion-label>
+					    <ion-toggle name="IsDefSamplesReceived" [(ngModel)]="claimObject.ActionRequested.IsDefSamplesReceived" [disabled]="isViewMode" (ionChange)="defectiveSampleClicked(claimObject.ActionRequested)"></ion-toggle>
+					  </ion-item>
+
+					  <ion-item *ngIf="!claimObject.ActionRequested.IsDefSamplesReceived">
+					  	<ion-label stacked>Expected Date to Receive Samples</ion-label>
+						  <ion-datetime displayFormat="MM/DD/YYYY" placeholder="MM/DD/YYYY" name="ExpDateRcvSamples" 
+						  [min]="minDate" [(ngModel)]="claimObject.ActionRequested.ExpDateRcvSamples" [disabled]="isViewMode"></ion-datetime>
+					  </ion-item>
+					  
+					  <ion-item>
+					    <ion-label>Picture of defective samples received</ion-label>
+					    <ion-toggle name="IsPicDefSamplesReceived" [(ngModel)]="claimObject.ActionRequested.IsPicDefSamplesReceived" [disabled]="isViewMode"></ion-toggle>
+					  </ion-item>
+		        
+		        <ion-col  *ngIf="claimObject.ActionRequested.IsPicDefSamplesReceived">
+			        <ion-item>
+			          <ion-label stacked>Attach File</ion-label>
+							</ion-item>
+							
+							<!-- Image Browser --><!-- Camera -->
+							<ion-row>
+								<ion-col col-8 no-padding>
+									<ion-buttons ion-item>
+                    <input type="file" class="custom-file-input" id="defectiveSampleAttach" name="defectiveSampleAttach" #defectiveSampleAttach ng2FileSelect [uploader]="uploaderdefectiveSampleAttach"  multiple accept="image/*"  [disabled]="isViewMode"/>
+										<button ion-button block small round outline class="btn btn-primary custom-file" (click)="defectiveSampleAttach.click()" [disabled]="isViewMode">
+											Browse
+										</button>
+									</ion-buttons>
+								</ion-col>
+								<ion-col col-4 no-padding>
+									<ion-buttons ion-item>
+											<button ion-button small light color="light" class="btn-camera" (click)="onInitDefectiveCamera($event)" [disabled]="isViewMode">
+												<ion-icon color="primary" class="icon-camera"></ion-icon>
+											</button>
+									</ion-buttons>
+								</ion-col>
+							</ion-row>
+
+	            <ion-item *ngIf="uploaderDefectiveDetail.length || cameraUploaderDefectiveTicket.length">
+			            <ion-label stacked
+			            	(tap)="showAttachmentdModal(uploaderDefectiveDetail, uploaderdefectiveSampleAttach.queue, cameraUploaderDefectiveTicket, claimObject.ClaimAttachments, 'claimKey')" >
+			            	{{uploaderDefectiveDetail.length}} Files Added
+			            	<ion-icon class="icon-eye" no-padding > </ion-icon>
+			            </ion-label>
+			        </ion-item>
+			        <!-- End Image Browser / Camera -->
+			      </ion-col>
+				</ion-list>
+
+			 	<ion-list>
+						<ion-list radio-group name="IsCommertialAction" [(ngModel)]="claimObject.ActionRequested.IsCommertialAction">
+						  <ion-item>
+						    <ion-label>No Commercial Action Needed</ion-label>
+						    <ion-radio name="IsCommertialActionFalse" value="false" (click)="noCommercialClicked(claimObject.ActionRequested);" [disabled]="isViewMode"></ion-radio>
+						  </ion-item>
+						  <ion-item>
+						    <ion-label>Commercial Action Needed</ion-label>
+						    <ion-radio name="IsCommertialActionTrue" value="true" (click)="commercialClicked(claimObject.ActionRequested);" [disabled]="isViewMode"></ion-radio>
+						  </ion-item>
+						</ion-list>
+						
+						<!-- No Commercial Action Needed -->
+						<ion-list *ngIf="!claimObject.ActionRequested.IsCommertialAction">
+						  <ion-item>
+						    <ion-label>Request CAPA</ion-label>
+						    <ion-toggle name="CAPAFlag" [(ngModel)]="claimObject.ActionRequested.CAPAFlag" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+					  	<ion-item>
+						    <ion-label>Remarks</ion-label>
+						    <ion-toggle name="IsRemarks" [(ngModel)]="claimObject.ActionRequested.IsRemarks" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+					  	<ion-item *ngIf="claimObject.ActionRequested.IsRemarks">
+		            <ion-textarea name="Remarks" placeholder="Description" [(ngModel)]="claimObject.ActionRequested.Remarks" [disabled]="isViewMode"></ion-textarea>
+						  </ion-item>
+						</ion-list>
+
+						<!-- Commercial Action Needed -->
+						<ion-list *ngIf="claimObject.ActionRequested.IsCommertialAction" radio-group name="IsMajorClaim" [(ngModel)]="claimObject.ClaimDetails.IsMajorClaim">
+						  <ion-item>
+						    <ion-label>Minor &amp; below {{currencyObject.CurrencySymbol}} {{currencyObject.Threshold}}</ion-label>
+						    <ion-radio name="IsMajorClaimFalse" value="false" (click)="minorOptionClick(claimObject.ClaimDetails)" [disabled]="isViewMode"></ion-radio>
+						  </ion-item>
+						  <ion-item>
+						    <ion-label>Claim Other to be Validated by Quality Manager</ion-label>
+						    <ion-radio name="IsMajorClaimTrue" value="true" (click)="majorOptionClick(claimObject.ClaimDetails)" [disabled]="isViewMode"></ion-radio>
+						  </ion-item>
+						</ion-list>
+	
+						<ion-list *ngIf="claimObject.ActionRequested.IsCommertialAction">
+						  <ion-item>
+						    <ion-label>Issue Credit</ion-label>
+						    <ion-toggle name="IsIssueCredit" [(ngModel)]="claimObject.ActionRequested.IsIssueCredit" (ngModelChange)="issueCreditClick(claimObject.ActionRequested);" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+						  
+						  <ion-item *ngIf="claimObject.ClaimDetails.IsMajorClaim">
+						    <ion-label>Return Authorization</ion-label>
+						    <ion-toggle name="IsRA" [(ngModel)]="claimObject.ActionRequested.IsRA" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+
+						  <ion-item *ngIf="!claimObject.ClaimDetails.IsMajorClaim">
+						    <ion-label>Request CAPA</ion-label>
+						    <ion-toggle name="CAPAFlag" [(ngModel)]="claimObject.ActionRequested.CAPAFlag" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+						  
+						  <ion-item>
+						    <ion-label>Replacement</ion-label>
+						    <ion-toggle name="IsReplacement" [(ngModel)]="claimObject.ActionRequested.IsReplacement" (ngModelChange)="replacementClick(claimObject.ActionRequested);" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+					  	<ion-item>
+						    <ion-label>Remarks</ion-label>
+						    <ion-toggle name="IsRemarks" [(ngModel)]="claimObject.ActionRequested.IsRemarks" [disabled]="isViewMode"></ion-toggle>
+						  </ion-item>
+					  	<ion-item *ngIf="claimObject.ActionRequested.IsRemarks">
+		            <ion-textarea name="Remarks" placeholder="Description" [(ngModel)]="claimObject.ActionRequested.Remarks" [disabled]="isViewMode"></ion-textarea>
+						  </ion-item>
+						</ion-list>
+
+						<ion-item *ngIf="claimObject.ActionRequested.IsRA">
+	            <ion-label stacked>RA No.</ion-label>
+	            <ion-input name="RANumber" type="text" [(ngModel)]="claimObject.ActionRequested.RANumber" placeholder="RA No." maxlength="10" [disabled]="isViewMode"></ion-input>
+						</ion-item>
+
+						<ion-list *ngIf="claimObject.ActionRequested.IsIssueCredit">
+							<ion-item no-lines>
+		            <ion-label stacked>Unit Costs</ion-label>
+		          </ion-item>
+							<ion-item class="item-cost">
+		            <ion-label>{{currencyObject.CurrencySymbol}}</ion-label>
+		            <ion-input name="ICUnitCost" type="text" [(ngModel)]="claimObject.ActionRequested.ICUnitCost" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46' placeholder="Unit Cost" maxlength="12" (ngModelChange)="issueCreditTotalCost(claimObject.ActionRequested)" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+
+							<ion-item>
+		            <ion-label stacked>Quantity</ion-label>
+		            <ion-input name="ICQuantity" type="text" [(ngModel)]="claimObject.ActionRequested.ICQuantity" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Quantity" maxlength="12" (ngModelChange)="issueCreditTotalCost(claimObject.ActionRequested)" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+							<span class="unit-span">units</span>
+
+							<ion-item no-lines>
+		            <ion-label stacked>Additional Cost</ion-label>
+		          </ion-item>
+							<ion-item>
+		            <ion-label>{{currencyObject.CurrencySymbol}}</ion-label>
+		            <ion-input name="IssueCreditAdditionalCost" type="text" [(ngModel)]="claimObject.ActionRequested.IssueCreditAdditionalCost" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46' placeholder="Additional Cost" maxlength="12" (ngModelChange)="issueCreditTotalCost(claimObject.ActionRequested)" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+
+							<ion-item no-lines>
+		            <ion-label stacked>Total Cost</ion-label>
+		          </ion-item>
+							<ion-item class="item-cost">
+		            <ion-label>{{currencyObject.CurrencySymbol}}</ion-label>
+		            <ion-input name="ICTotalCost" type="text" [(ngModel)]="claimObject.ActionRequested.ICTotalCost" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Total Cost" maxlength="12" disabled></ion-input>
+							</ion-item>
+
+							<ion-item>
+		            <ion-label stacked>Responsible Department</ion-label>
+							  <ion-select name="Responsible" interface="action-sheet" [(ngModel)]="claimObject.ActionRequested.Responsible" disabled>
+						    	<ion-option value="1">Accounts Payable</ion-option>
+							  </ion-select>
+							</ion-item>
+						</ion-list>
+
+						<ion-list *ngIf="claimObject.ActionRequested.IsReplacement">
+							<ion-item no-lines class="no-lines">
+		            <ion-label stacked>Unit Cost</ion-label>
+		          </ion-item>
+							<ion-item class="item-cost">
+		            <ion-label>{{currencyObject.CurrencySymbol}}</ion-label>
+		            <ion-input name="ReplacementUnitCost" type="text" [(ngModel)]="claimObject.ActionRequested.ReplacementUnitCost" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46' placeholder="Unit Cost" maxlength="12" (ngModelChange)="issueReplacementTotalCost(claimObject.ActionRequested)" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+
+							<ion-item>
+		            <ion-label stacked>Quantity</ion-label>
+		            <ion-input name="ReplacementQuantity" type="text" [(ngModel)]="claimObject.ActionRequested.ReplacementQuantity" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Quantity" maxlength="12" (ngModelChange)="issueReplacementTotalCost(claimObject.ActionRequested)" [disabled]="isViewMode"></ion-input>
+							</ion-item>
+                         <span class="unit-span">units</span>
+							<ion-item no-lines>
+		            <ion-label stacked>Total Cost</ion-label>
+		          </ion-item>
+							<ion-item class="item-cost">
+		            <ion-label>{{currencyObject.CurrencySymbol}}</ion-label>
+		            <ion-input name="ReplacementTotalCost" type="text" [(ngModel)]="claimObject.ActionRequested.ReplacementTotalCost" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Total Cost" maxlength="12" disabled></ion-input>
+							</ion-item>
+
+							<ion-item>
+		            <ion-label stacked>Responsible Department</ion-label>
+							  <ion-select name="Responsible" interface="action-sheet" [(ngModel)]="claimObject.ActionRequested.Responsible" disabled>
+						    	<ion-option value="1">Accounts Payable</ion-option>
+							  </ion-select>
+							</ion-item>
+						</ion-list>
+				</ion-list>
+      </ion-card>
+
+			<!-- Additional Information --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=4">
+			 	<ion-list>
+		        <ion-item class="heading">
+		        	<h3>Additional Information</h3>
+		        </ion-item>
+
+		        <ion-item>
+		            <ion-label stacked>Notes</ion-label>
+		            <ion-textarea name="Notes" type="text" [(ngModel)]="claimObject.ClaimDetails.Notes" placeholder="Description" [disabled]="isViewMode"></ion-textarea>
+		        </ion-item>
+		        <ion-item>
+		            <ion-label stacked>Feedback for improvement</ion-label>
+		            <ion-textarea name="Feedback" type="text" [(ngModel)]="claimObject.ClaimDetails.Feedback" placeholder="Description" [disabled]="isViewMode"></ion-textarea>
+		        </ion-item>
+		        <ion-item>
+		            <ion-label stacked>Sent Email To</ion-label>
+		            <ion-textarea name="sendEmailsTo" type="text" [(ngModel)]="claimObject.ClaimDetails.sendEmailsTo" placeholder="Enter multiple email ids seperated by comma" maxlength="1000" multiple [disabled]="isViewMode"></ion-textarea>
+		        </ion-item>
+				</ion-list>
+      </ion-card>
+
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+      <ion-buttons  left *ngIf="stepNavigation!=0">
+        <button solid ion-button small round color="primary" (click)="gotoPreviousSlide()"><ion-icon class="icon-arrow-left"></ion-icon> Prev</button>
+      </ion-buttons>
+			
+      <ion-title text-center *ngIf="!isViewMode" class="saveas-btn">
+        <button ion-button small outline color="primary" (click)="draftOrSubmitClaim(claimObject, 'draft')">Save as Draft</button>
+      </ion-title>
+
+			<ion-buttons right *ngIf="stepNavigation==4 && !isViewMode">
+        <button solid ion-button small round color="primary" (click)="validateAndSubmitClaim(claimObject, 'submit')">Submit</button>
+      </ion-buttons>
+
+      <ion-buttons right *ngIf="stepNavigation!=4">
+        <button solid ion-button small round color="primary" (click)="gotoNextSlide(claimObject)">Next <ion-icon class="icon-arrow-right"></ion-icon></button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

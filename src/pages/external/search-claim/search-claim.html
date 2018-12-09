@@ -1,0 +1,141 @@
+<ion-header>
+	<ion-navbar hideBackButton>
+      <ion-buttons left (click)="gotoBackPage()">
+        <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+      </ion-buttons>
+      <ion-title text-center *ngIf="showSearchFilters">Search Claim</ion-title>
+			<ion-title text-center *ngIf="!showSearchFilters" class="srch-result-head">Search Results</ion-title>
+			<ion-buttons end class="claim-button" [hidden]="!showSearchFilters">
+				<button ion-button color="primary" (click)="resetClicked()">Reset</button>
+			</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+
+	<ion-content padding [hidden]="!showSearchFilters"  class="bg-shade search-claim">
+	    <ion-list>
+
+			  <ion-item no-padding>
+			    <ion-input type="text" placeholder="Universal Search" name="GlobalSerach" [(ngModel)]="searchFilters.GlobalSerach"></ion-input>
+			  </ion-item>
+
+			  <ion-item no-padding>
+			    <ion-input type="text" placeholder="CAR#" name="ComplaintNumber" [(ngModel)]="searchFilters.ComplaintNumber"></ion-input>
+			  </ion-item>
+
+			  <ion-item no-padding>
+			    <ion-input type="text" placeholder="Customer Name" name="CustomerName" [(ngModel)]="searchFilters.CustomerName"></ion-input>
+			  </ion-item>
+				
+			  <ion-row>
+				  <ion-item ion-col no-padding>
+				  	<ion-label stacked>Created Date</ion-label>
+					  <ion-datetime placehoder="Start Date" displayFormat="MM/DD/YYYY" name="ClaimInitiationFrom" [(ngModel)]="searchFilters.ClaimInitiationFrom"></ion-datetime>
+				  </ion-item>
+				  <ion-item ion-col no-padding>
+				  	<ion-label stacked>End Date</ion-label>
+					  <ion-datetime placehoder="End Date" displayFormat="MM/DD/YYYY" name="ClaimInitiationTo" [(ngModel)]="searchFilters.ClaimInitiationTo"></ion-datetime>
+				  </ion-item>
+			  </ion-row>
+
+			  <ion-item no-padding>
+			    <ion-input type="text" placeholder="Invoice Number" name="InvoiceNumber" [(ngModel)]="searchFilters.InvoiceNumber" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44'></ion-input>
+			  </ion-item>
+
+			  <ion-item no-padding>
+			    <ion-input type="text" placeholder="Initiated By" name="Initiator" [(ngModel)]="searchFilters.Initiator"></ion-input>
+			  </ion-item>
+
+				<ion-item no-padding>
+				  <ion-label stacked hidden>Claim Status</ion-label>
+				  <ion-select name="StatusID" interface="action-sheet" [(ngModel)]="searchFilters.StatusID">
+			    	<ion-option value="0">Select Status</ion-option>
+			    	<ion-option *ngFor="let status of claimStatusList;" value="{{status.ClaimSatatusId}}">{{status.ClaimSatus}}</ion-option>
+				  </ion-select>
+				</ion-item>
+
+			  <ion-item no-padding>
+				  <ion-label stacked hidden>Claim Category</ion-label>
+				  <ion-select name="CategoryID" interface="action-sheet" [(ngModel)]="searchFilters.CategoryID">
+			    	<ion-option value="0">Select Category</ion-option>
+			    	<ion-option *ngFor="let category of claimCategoryList;" value="{{category.ClaimCategoryId}}">{{category.ClaimCategory}}</ion-option>
+				  </ion-select>
+			  </ion-item>
+
+	    </ion-list>
+
+			<ion-row>
+				<ion-col text-center>
+				  <button ion-button round block color="primary" (click)="doClaimSearch(searchFilters)">
+				    Search
+				  </button>
+				</ion-col>
+			</ion-row>
+
+	</ion-content>
+
+
+	<ion-content padding [hidden]="showSearchFilters" class="search-result-bg">
+
+	  <ion-item end *ngIf="pagination.totalItems" class="no-of-recrods">
+	    <ion-label ion-text color="light-gray" text-right >Records per page</ion-label>
+	    <ion-select name="PageSize" interface="action-sheet" small [(ngModel)]="searchFilters.PageSize"  (ngModelChange)="applySearch(searchFilters)">
+	      <ion-option value="10">10</ion-option>
+	      <ion-option value="25">25</ion-option>
+	      <ion-option value="50">50</ion-option>
+	      <ion-option value="100">100</ion-option>
+	    </ion-select>
+	  </ion-item>
+	  
+	  <ion-list class="search-result">
+	    <ion-item *ngFor="let claim of claimsList; let i=index;" class="expand-wrapper" [ngClass]="{active: isGroupShown(i)}" (click)="toggleGroup(i)">
+	    	<ion-row>
+	    		<ion-col col-11>
+			      <h2>{{claim.ComplaintNumber}}</h2>
+						<p> <i class="status-{{claim.Status}}"></i> {{claim.Status}}</p>
+	    		</ion-col>
+	    		<ion-col col-1>
+	    			<ion-icon class="icon-arrow-{{isGroupShown(i) ? 'up':'down'}}" item-right name="{{isGroupShown(i) ? 'ios-arrow-dropup':'ios-arrow-dropdown'}}"> </ion-icon>
+	    		</ion-col>
+	    	</ion-row>
+				<ion-row class="expandable" [ngClass]="{active: isGroupShown(i)}">
+          <ion-item>
+            <label>Customer Name</label>
+            <ion-col col-12>{{claim.CustomerName}}</ion-col>
+          </ion-item>
+          <ion-item>
+            <label>Amount</label>
+            <ion-col col-12>{{claim.Amount}}</ion-col>
+          </ion-item>
+          <ion-item>
+            <label>Currency</label>
+            <ion-col col-12>{{claim.currency}}</ion-col>
+          </ion-item>
+					<ion-item text-center class="no-pad">
+					  <button ion-button round block color="primary" (click)="gotoClaimPage(claim.ComplaintNumber)">
+					    Go To Claim
+					  </button>
+					</ion-item>
+				</ion-row>
+	    </ion-item>
+	  </ion-list>
+		 
+		<!-- <ion-item *ngIf="!pagination.totalItems">		
+		  <h4 class="text-center">No records found.</h4>
+		</ion-item> -->
+
+		<ion-item *ngIf="pagination.totalItems">		
+		  <pagination
+		    previousText= '&lsaquo;'
+		    nextText= '&rsaquo;'
+		    firstText="&laquo;" lastText="&raquo;"
+		    [boundaryLinks]= "true"
+		    [totalItems]="pagination.totalItems"
+		    [(ngModel)]="pagination.currentPage"
+		    [maxSize]="pagination.maxPages"
+		    [itemsPerPage]="pagination.itemsPerPage"
+		    (pageChanged)="paginationChanged($event)" [hidden]="loading">
+		  </pagination>
+		</ion-item>
+	</ion-content>
+ 

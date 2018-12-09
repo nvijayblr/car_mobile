@@ -1,0 +1,81 @@
+.popover-page h3 {
+	font-family: Arial;
+	font-weight: 500;
+	font-size: remnew(36);
+    text-align: right;
+    padding: 0 10px 17px 0;
+    color: #312857;
+    border-bottom: 1px solid #dedede;
+}
+
+.popover-page h4 {
+	font-family: Arial;
+	font-weight: 500;
+	font-size: remnew(30);
+    text-align: right;
+    padding: 0 10px 0 0;
+    color: #368ef8;
+}
+
+.popover-page ion-icon {
+    color: #050505;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: .3;
+    margin: 0 0 0 10px;
+}
+
+.popover-content {
+    top: remnew(90) !important;
+    right: remnew(25);
+     left: inherit !important;
+    box-shadow: none !important;
+    border-radius: 5px !important;
+    height:170px;
+}
+.platform-ios .popover-content {
+    top: remnew(115) !important;
+}
+.platform-ios .popover-arrow {
+   top: remnew(100) !important;
+}
+
+.popover-arrow {
+        display: block !important;
+   top: remnew(75) !important;
+   left: inherit !important;
+  right: remnew(42) !important;
+}
+
+.popover-arrow::after {
+    left: inherit;
+    top: 40px;
+    border-radius: 3px;
+    position: absolute;
+    z-index: 10;
+    width: 14px;
+    height: 14px;
+    background-color: #fff;
+    content: "";
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    overflow: hidden;
+    right: 22px;
+}
+.br-bottom {
+        border-bottom: 1px solid #dedede;
+}
+.br-bottom > .item-block:first-child {
+    border-top: none;
+}
+.br-bottom > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: none;
+}
+.br-bottom ion-label {
+    text-align: right;
+}
+.ion-sel-lang {
+    position: absolute;
+    right: 0;
+    padding: 11px 10px 11px 0;
+}

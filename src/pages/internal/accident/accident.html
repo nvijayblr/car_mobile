@@ -1,0 +1,237 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-buttons left (click)="gotoBackPage()">
+          <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+        </ion-buttons>
+        
+        <ion-title text-center *ngIf="!isViewMode && !isEditMode">{{'accident.header.newClaim'|translate}}</ion-title>
+        <ion-title text-center *ngIf="isViewMode || isEditMode">{{'accident.header.claimDetails'|translate}}</ion-title>
+        
+        <ion-buttons end class="claim-button">
+          <button ion-button color="primary" *ngIf="!isViewMode" (click)="resetClicked()">{{'common.reset'|translate}}</button>
+
+          <button ion-button color="primary" *ngIf="isViewMode && claimObject.ClaimStatusId!=2 && this.common.getInternalWeightage() > 20" (click)="editClaimClicked()">{{'common.edit'|translate}}</button>
+
+        </ion-buttons>
+    </ion-navbar>
+
+    <ion-toolbar class="claim claim-int claim-hazard-int" >
+      <ion-segment [(ngModel)]="stepNavigation" color="primary">
+        <ion-segment-button value="0">
+          <i class="badge-num">1</i>
+          {{'accident.basic.title'|translate}}
+        </ion-segment-button>
+        <ion-segment-button value="1" [disabled]="stepsCompleted<1">
+          <i class="badge-num">2</i>
+          {{'accident.incident.title'|translate}}
+        </ion-segment-button>
+        <ion-segment-button value="2" [disabled]="stepsCompleted<2">
+          <i class="badge-num">3</i>
+          {{'accident.injury.title'|translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+ 
+<ion-content padding [class]="isViewMode ? 'view-claim':'edit-page'">
+
+  <form #claimForm="ngForm" autocomplete="off">
+    <div>
+
+      <!-- Basic Details -->
+      <ion-card pager auto-height [hidden]="stepNavigation!=0">
+        <ion-list ion-row>
+            <ion-item border-bottom class="heading">
+              <h3>{{'accident.basic.title'|translate}}</h3>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'accident.basic.referenceNo'|translate}}</ion-label>
+                <ion-input name="ReferenceNo" type="text" disabled [(ngModel)]="claimObject.ReferenceNo" placeholder="{{'accident.basic.referenceNo'|translate}}"></ion-input>
+            </ion-item>
+            
+            <ion-col no-padding>
+              <ion-row>
+                <ion-item ion-col [color]="isSubmitted && !claimObject.IncidentDate ? 'error':''">
+                  <ion-label stacked>{{'accident.basic.dateOfIncident'|translate}}<span class="required">*</span></ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY" placeholder="MM/DD/YYYY" name="IncidentDate" [max]="minDate" [(ngModel)]="claimObject.IncidentDate" [disabled]="isViewMode"></ion-datetime>
+                </ion-item>
+                <ion-item ion-col [color]="isSubmitted && !claimObject.IncidentTime ? 'error':''">
+                  <ion-label stacked>{{'accident.basic.timeOfIncident'|translate}}<span class="required">*</span></ion-label>
+                  <ion-datetime displayFormat="hh:mm a" placeholder="hh:mm" name="IncidentTime" [(ngModel)]="claimObject.IncidentTime" [disabled]="isViewMode"></ion-datetime>
+                </ion-item>
+              </ion-row>
+            </ion-col>
+
+            <ion-item [color]="isSubmitted && !claimObject.EmployeeName ? 'error':''">
+                <ion-label stacked>{{'accident.basic.injuredEmployeeName'|translate}}<span class="required">*</span></ion-label>
+                <ion-input name="EmployeeName" type="text" [(ngModel)]="claimObject.EmployeeName" placeholder="{{'accident.basic.injuredEmployeeName'|translate}}" required [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'accident.basic.employeeNo'|translate}}</ion-label>
+                <ion-input name="EmployeeNo" type="text" [(ngModel)]="claimObject.EmployeeNo" placeholder="{{'accident.basic.employeeNo'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item  [color]="isSubmitted && !claimObject.EmploymentTypeId ? 'error':''">
+              <ion-label stacked>{{'accident.basic.employementType'|translate}}<span class="required">*</span></ion-label>
+              <ion-select name="EmploymentTypeId" interface="action-sheet" [(ngModel)]="claimObject.EmploymentTypeId" required [disabled]="isViewMode" cancelText="{{'common.cancel'|translate}}">
+                <ion-option value="">{{'common.select'|translate}}</ion-option>
+                <ion-option *ngFor="let item of typeOfEmployment;" value="{{item.Id}}">{{item.Name}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'accident.basic.employeeMiniCo'|translate}}</ion-label>
+                <ion-input name="EmplyeeMinCo" type="text" [(ngModel)]="claimObject.EmplyeeMinCo" placeholder="{{'accident.basic.employeeMiniCo'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="claimObject.ReferenceNo">
+              <ion-label stacked>{{'accident.basic.claimStatus'|translate}}</ion-label>
+              <ion-select name="ClaimStatusId" interface="action-sheet" [(ngModel)]="claimObject.ClaimStatusId" required disabled cancelText="{{'common.cancel'|translate}}">
+                <ion-option *ngFor="let item of claimStatusList;" value="{{item.Id}}">{{item.Name}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+        </ion-list>
+      </ion-card>
+      
+      <!-- Incident Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=1">
+        <ion-list>
+            <ion-item class="heading">
+              <h3>{{'accident.incident.title'|translate}}</h3>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.IncidentDetail.SendToId ? 'error':''">
+                <ion-label stacked>{{'accident.incident.sendTo'|translate}}<span class="required">*</span></ion-label>
+                <ion-select name="SendToId" interface="action-sheet" [(ngModel)]="claimObject.IncidentDetail.SendToId" required [disabled]="isViewMode" cancelText="{{'common.cancel'|translate}}">
+                  <ion-option value="">{{'common.select'|translate}}</ion-option>
+                  <ion-option *ngFor="let item of sendToList;" value="{{item.Id}}">{{item.Name}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.IncidentDetail.ReportedBy ? 'error':''">
+                <ion-label stacked>{{'accident.incident.reportedBy'|translate}}<span class="required">*</span></ion-label>
+                <ion-input name="ReportedBy" type="text" [(ngModel)]="claimObject.IncidentDetail.ReportedBy" placeholder="{{'accident.incident.reportedBy'|translate}}" required [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.IncidentDetail.Location ? 'error':''">
+                <ion-label stacked>{{'accident.incident.location'|translate}}<span class="required">*</span></ion-label>
+                <ion-input name="Location" type="text" [(ngModel)]="claimObject.IncidentDetail.Location" placeholder="{{'accident.incident.location'|translate}}" [disabled]="isViewMode"></ion-input>
+            </ion-item>
+
+            <ion-item [color]="isSubmitted && !claimObject.IncidentDetail.Description ? 'error':''">
+                <ion-label stacked>{{'accident.incident.description'|translate}}<span class="required">*</span></ion-label>
+                <ion-textarea name="{{'accident.incident.description'|translate}}" type="text" [(ngModel)]="claimObject.IncidentDetail.Description" placeholder="{{'accident.incident.description'|translate}}" required [disabled]="isViewMode"></ion-textarea>
+            </ion-item>
+            
+            <ion-item>
+                <ion-label stacked>{{'accident.incident.immediateActions'|translate}}</ion-label>
+                <ion-textarea name="ImmediateAction" type="text" [(ngModel)]="claimObject.IncidentDetail.ImmediateAction" placeholder="{{'accident.incident.immediateActions'|translate}}" [disabled]="isViewMode"></ion-textarea>
+            </ion-item>
+            
+            <ion-item>
+                <ion-label stacked>{{'accident.incident.sendAdditionalEmail'|translate}}</ion-label>
+                <ion-textarea name="EmailTo" type="text" [(ngModel)]="claimObject.IncidentDetail.EmailTo" placeholder="{{'accident.incident.multipleEmail'|translate}}" maxlength="1000" multiple [disabled]="isViewMode"></ion-textarea>
+            </ion-item>
+
+        </ion-list>
+      </ion-card>
+
+      <!-- Injury Details --> 
+      <ion-card pager auto-height [hidden]="stepNavigation!=2">
+        <ion-list>
+            <ion-item  class="heading">
+              <h3>{{'accident.injury.title'|translate}}</h3>
+            </ion-item>
+
+            <ion-row>
+              <ion-item ion-col [color]="isSubmitted && !claimObject.InjuryDetail.InjuryNatureId ? 'error':''">
+                  <ion-label stacked>{{'accident.injury.injuryNature'|translate}}<span class="required">*</span></ion-label>
+                  <ion-select name="InjuryNatureId" interface="action-sheet" [(ngModel)]="claimObject.InjuryDetail.InjuryNatureId" required [disabled]="isViewMode" cancelText="{{'common.cancel'|translate}}">
+                    <ion-option value="">{{'common.select'|translate}}</ion-option>
+                  <ion-option *ngFor="let item of natureOfInjury;" value="{{item.Id}}">{{item.Name}}</ion-option>
+                  </ion-select>
+              </ion-item>
+              <ion-item ion-col [color]="isSubmitted && !claimObject.InjuryDetail.InjuryLocationId ? 'error':''">
+                  <ion-label stacked>{{'accident.injury.injuryLocation'|translate}}<span class="required">*</span></ion-label>
+                  <ion-select name="InjuryLocationId" interface="action-sheet" [(ngModel)]="claimObject.InjuryDetail.InjuryLocationId" required [disabled]="isViewMode" cancelText="{{'common.cancel'|translate}}">
+                    <ion-option value="">{{'common.select'|translate}}</ion-option>
+                  <ion-option *ngFor="let item of locationOfInjury;" value="{{item.Id}}">{{item.Name}}</ion-option>
+                  </ion-select>
+              </ion-item>
+            </ion-row>
+
+            <ion-item>
+                <ion-label stacked>{{'accident.injury.ppeWearingCorrect'|translate}}</ion-label>
+                <ion-textarea name="Ppe" type="text" [(ngModel)]="claimObject.InjuryDetail.Ppe" placeholder="{{'accident.injury.description'|translate}}" [disabled]="isViewMode"></ion-textarea>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>{{'accident.injury.carClosedBy'|translate}}</ion-label>
+                <ion-input name="CarClosedBy" type="text" [(ngModel)]="claimObject.InjuryDetail.CarClosedBy" placeholder="{{'accident.injury.carClosedBy'|translate}}" disabled></ion-input>
+            </ion-item>
+            
+            <ion-item>
+                <ion-label stacked>{{'accident.injury.carClosedDate'|translate}}</ion-label>
+                <ion-input name="CarClosedDate" type="text" [(ngModel)]="claimObject.InjuryDetail.CarClosedDate" placeholder="MM/DD/YYYY" disabled></ion-input>
+            </ion-item>
+            
+            <ion-item>
+                <ion-label stacked>{{'accident.injury.attachPhoto'|translate}}</ion-label>
+            </ion-item>
+
+            <ion-row>
+              <ion-col col-8 no-padding>
+                <ion-buttons ion-item>
+                  <input type="file" class="custom-file-input" id="imageAttachment" name="imageAttachment" #imageAttachment ng2FileSelect [uploader]="imageUploader"  multiple accept="image/*" [disabled]="isViewMode" />
+                  <button round outline ion-button small block class="btn btn-primary custom-file" (click)="imageAttachment.click()" [disabled]="isViewMode">
+                    {{'accident.injury.browse'|translate}}
+                  </button>
+                </ion-buttons>
+              </ion-col>
+              <ion-col col-4 no-padding>
+                <ion-buttons ion-item>
+                    <button ion-button small light color="light" class="btn-camera" (click)="onInitAttachmentCamera($event)" [disabled]="isViewMode">
+                        <ion-icon color="primary" class="icon-camera"></ion-icon>
+                    </button>
+                </ion-buttons>
+              </ion-col>
+            </ion-row>
+            <ion-item *ngIf="imageUploaderDetail.length || cameraUploader.length">
+                <ion-label stacked 
+                (tap)="showAttachmentdModal(imageUploaderDetail, imageUploader.queue, cameraUploader, claimObject.InjuryDetail.Attachment, 'Internal')" >
+                {{imageUploaderDetail.length}} {{'accident.injury.fileAdded'|translate}}
+                <ion-icon class="icon-eye" no-padding > </ion-icon>
+              </ion-label>
+            </ion-item>
+          
+
+        </ion-list>
+      </ion-card>
+
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+      <ion-buttons  left *ngIf="stepNavigation!=0">
+        <button solid ion-button small round color="primary" (click)="gotoPreviousSlide()"><ion-icon class="icon-arrow-left"></ion-icon> {{'common.prev'|translate}}</button>
+      </ion-buttons>
+      
+      <ion-title text-center *ngIf="!isViewMode">
+        <button ion-button small outline color="primary" (click)="draftOrSubmitClaim(claimObject, '1')">{{'common.saveasDraft'|translate}}</button>
+      </ion-title>
+
+      <ion-buttons right *ngIf="stepNavigation==2 && !isViewMode">
+        <button solid ion-button small round color="primary" (click)="validateAndSubmitClaim(claimObject, 'submit')">{{'common.submit'|translate}}</button>
+      </ion-buttons>
+
+      <ion-buttons right *ngIf="stepNavigation!=2">
+        <button solid ion-button small round color="primary" (click)="gotoNextSlide(claimObject)">{{'common.next'|translate}} <ion-icon class="icon-arrow-right"></ion-icon></button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

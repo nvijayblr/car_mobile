@@ -1,0 +1,175 @@
+{
+    "common": {
+        "select": "доступный избранным",
+        "cancel": "Отмена",
+        "prev":"преды",
+        "saveasDraft":"Сохранить как",
+        "submit":"Отправить",
+        "next":"следующий",
+        "resetFormModal":"Сброс очистит все введенные значения перед сохранением. Вы хотите продолжать?",
+        "yes":"да",
+        "no":"нет",
+        "close": "Закрыть",
+        "delete": "Удалить",
+        "reset":"Сброс",
+        "edit":"редакти",
+        "logout": "Выйти",
+        "deleteAttachment":"Приложение успешно удалено.",
+        "networkError": "К сожалению! что-то пошло не так.",
+        "currentLanguage":"русский"
+    },
+    "header": {
+        "applicationName": "Claim Processing Application",
+        "logoutTitle": "Выйти",
+        "logoutMessage": "Вы действительно хотите выйти?",
+        "yesLable": "да",
+        "noLabel": "нет",
+        "claimsMenu": "CLAIMS",
+        "capaMenu": "CAPA",
+        "selectModule":"Выберите модуль"
+    },
+    "landingPage": {
+        "externalMessage": "Создание, просмотр и управление различными типами требований, таких как «Потребитель», «Клиент» и «Compliants» и т. Д.",
+        "internalMessage": "Создание, просмотр и управление объявлениями о рисках и авариях",
+        "externalButton": "внешний",
+        "internalButton": "внутренний"
+    },
+    "dashboard":{
+        "pageHead":"Внутренняя панель",
+        "createNew":"Создать новый",
+        "searchFor":"Искать",
+        "claim":"Запрос",
+        "recentClaims":"Последние заявки",
+        "selectClaimType": "Выберите тип претензии",
+        "accidentDeclaration": "Декларация о несчастных случаях",
+        "hazardIdentification": "Идентификация опасности"
+    },
+    "searchPage": {
+        "searchClaim": "Поиск претензий",
+        "searchResults": "результаты поиска",
+        "reset": "Сброс",
+        "universalSearch": "Универсальный поиск",
+        "fromDate": "С даты",
+        "toDate": "Встретиться",
+        "claimsType": "Тип претензий",
+        "referenceNo": "Номер ссылки",
+        "claimStatus": "Статус претензии",
+        "search": "Поиск",
+        "employeeName": "Имя сотрудника",
+        "recordsPerPage":"записи на страницу",
+        "gotoClaim":"Перейти к заявлению",
+        "noRecordsFound": "Записей не найдено",
+        "toDateGreaterThanFrom": "Инициирование к дате должно быть больше или равно Началу с даты"
+    },
+    "accident": {
+        "header": {
+            "newClaim":"Новая претензия",
+            "claimDetails":"Сведения о претензии"
+        },
+        "basic": {
+            "title": "Основные Детали",
+            "referenceNo": "Номер ссылки",
+            "dateOfIncident": "Дата инцидента",
+            "timeOfIncident": "Время инцидента",
+            "injuredEmployeeName": "Имя потерпевшего сотрудника",
+            "employeeNo": "Сотрудник №",
+            "employementType": "Тип занятости",
+            "employeeMiniCo": "Mini-Co работника.",
+            "claimStatus": "Статус заявки"
+        },
+        "incident": {
+            "title": "Сведения об инциденте",
+            "sendTo": "Отправить",
+            "reportedBy": "Инцидент, зарегистрированный",
+            "location": "Точное местоположение инцидента",
+            "description": "Описание инцидента",
+            "immediateActions": "Немедленного действия на месте происшествия",
+            "sendAdditionalEmail": "Отправить дополнительные сообщения",
+            "multipleEmail": "Введите несколько идентификаторов электронной почты, разделенных запятой"
+        },
+        "injury": {
+            "title": "Информация о травме", 
+            "injuryNature": "Характер травмы",
+            "injuryLocation": "Местоположение травмы",
+            "ppeWearingCorrect": "Была ли жертва носить правильные СИЗ? Если да, то?",
+            "carClosedBy": "Автомобиль Закрыть от",
+            "carClosedDate": "Автомобиль дата закрытия",
+            "attachPhoto": "Прикрепить файл",
+            "browse":"Просматривать",
+            "fileAdded": "Добавлен файл",
+            "noImage":"Изображения не выбраны",
+            "fileNames":"Имена файлов",
+            "description":"Описание"
+        },
+        "validation": {
+            "dateOfIncident": "Выберите дату инцидента.",
+            "timeOfIncident": "Выберите время инцидента.",
+            "incidentDateTime": "Дата и время инцидента не должны превышать текущую дату и время.",
+            "employeeName": "Введите имя сотрудника.",
+            "employeeNo": "Введите номер сотрудника",
+            "employementType": "Выберите тип занятости.",
+            "sendTo": "Пожалуйста, выберите Отправлено.",
+            "reportedBy": "Пожалуйста, введите сообщение об инциденте.",
+            "location": "Укажите точное местоположение Инцидента.",
+            "description": "Введите описание инцидента.",
+            "validEmail": "Введите действительные идентификаторы электронной почты.",
+            "injuryNature": "Выберите природу травмы.",
+            "injuryLocation": "Выберите Место повреждения.",
+            "dateOfIncidentToaster": "Дата происшествия должна быть меньше или равна закрытой дате CAR",
+            "claim":"Запрос ",
+            "saveSuccess":" Успешно сохранено.",
+            "updateSuccess":" Успешно Обновлено.",
+            "submitSuccess":" Отправлено успешно."
+        }
+    },
+    "hazard": {
+        "header": {
+            "newClaim":"Новая претензия",
+            "claimDetails":"Сведения о претензии"
+        },
+        "basic": {
+            "title": " Основные сведения",
+            "referenceNo": "Номер ссылки",
+            "dateOfObservation": "Дата наблюдения",
+            "employeeName": "Имя сотрудника, запрашивающего действие",
+            "employeeNo": "Работник №.",
+            "employeeMiniCo": "Сотрудник Mini-Co.",
+            "claimStatus": "Статус претензии"
+        },
+        "hazard": {
+            "title": "Сведения об опасности",
+            "location": "Точное местоположение инцидента",
+            "natureOfHazard": "Природа опасности",
+            "description": "Описание опасности"
+        },
+        "action": {
+            "title": "Корректирующее действие",
+            "correctiveActionRequested": "Требуемое исправление",
+            "sendTo": "Отправить",
+            "estimatedPriority": "Предполагаемый приоритет",
+            "sendAdditionalEmail": "Отправить дополнительный адрес",
+            "multipleEmail": "Введите несколько идентификаторов электронной",
+            "carClosedBy": "АВТО ЗАКРЫТО",
+            "carClosedDate": "Закрытая дата CAR",
+            "attachPhoto": "Прикрепите фотографию",
+            "fileAdded": "Добавлен файл",
+            "browse":"Просматривать"
+        },
+        "validation": {
+            "dateOfObservation": "Выберите Наблюдаемая дата.",
+            "employeeName": "Введите имя сотрудника.",
+            "location": "Укажите точное местоположение Инцидента.",
+            "natureOfHazard": "Выберите Nature of Hazard.",
+            "description": "Введите описание опасности.",
+            "correctiveActionRequested": "Введите требуемое исправление.",
+            "sendTo": "Пожалуйста, выберите Отправлено.",
+            "estimatedPriority": "Пожалуйста, выберите Предполагаемый приоритет",
+            "validEmail": "Введите действительные идентификаторы электронной почты.",
+            "dateOfIncidentToaster": "Дата инцидента должна быть меньше или равна дате закрытия ТС.",
+            "claim":"Запрос ",
+            "saveSuccess":" Успешно сохранено.",
+            "updateSuccess":" Успешно Обновлено.",
+            "submitSuccess":" Отправлено успешно."
+        }
+    }
+}

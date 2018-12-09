@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons end>
+        <button *ngIf="key=='Internal'" ion-button (click)="closeModal()">{{'common.close'|translate}}</button>
+        <button *ngIf="key!='Internal'" ion-button (click)="closeModal()">Close</button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item *ngFor="let image of attachmentsList; let i = index;">
+    <a ion-item no-lines (click)="opneFileInBrowser(image.path)" *ngIf="image.AttachmentID">
+      {{image.name}}
+    </a>
+		<a ion-item no-lines *ngIf="!image.AttachmentID">
+		  {{image.name}}
+		</a>
+    <button *ngIf="!isViewMode && key=='Internal'" ion-button outline item-end (click)="deleteImage(image.name, image.FilePath, image, i)">{{'common.delete'|translate}}</button>
+
+    <button *ngIf="!isViewMode && key!='Internal'" ion-button outline item-end (click)="deleteImage(image.name, image.FilePath, image, i)">Delete</button>
+  </ion-item>
+
+</ion-content>

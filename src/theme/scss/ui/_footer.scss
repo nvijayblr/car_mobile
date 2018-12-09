@@ -1,0 +1,23 @@
+ion-footer{
+    button{
+        border-radius: 1.5rem !important;
+        padding: 0 1.5rem !important;
+        height: 2.5rem !important;
+        padding-top:0.2rem !important;
+
+        ion-icon{
+            font-size: 1.1rem;
+            margin-right: 0.2rem;
+            margin-left: 0.2rem;
+            line-height: 1rem;
+        }
+
+        .icon-arrow-left{
+            margin-left: -0.5rem;
+        }
+
+        .icon-arrow-right{
+            margin-right: -0.5rem;
+        }
+    }
+}

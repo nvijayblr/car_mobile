@@ -1,0 +1,32 @@
+.my-custom-tooltip .popover-arrow {
+    display: none !important;
+}
+
+.my-custom-tooltip .popover-content {
+    top: inherit !important;
+    right: inherit;
+    left: 16% !important;
+
+}
+
+.platform-ios .my-custom-tooltip .popover-content {
+     top: inherit !important;
+      left: 18% !important;
+          width: 240px;
+}
+.tootip-page {
+	    padding: 0 5px 0 10px;
+}
+
+.tootip-page p span {
+	        color: #312857;
+	        margin: 0 5px 0 0;
+}
+
+.dotted-class {
+    right: 35px;
+    position: absolute;
+    bottom: -4px;
+    font-size: 20px;
+    z-index: 999;
+}

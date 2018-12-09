@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+      <ion-title text-center class="select-hd">{{'header.selectModule' | translate}} </ion-title>
+      
+      <ion-buttons end (click)="presentPopover()">
+          <button ion-button><ion-icon class="icon-user" name=""></ion-icon></button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="bg-shade landingPage">
+  <ion-card class="external" *ngIf="this.common.getExternalWeightage() > 10">
+    <ion-card-content>
+      <ion-row>
+        <ion-col col-12 text-center><ion-img width="170.5" height="68" src="assets/imgs/graphic-external@3x.png"></ion-img></ion-col>
+      </ion-row>    
+      <h5 text-center>{{'landingPage.externalMessage' | translate}} </h5>
+      <button ion-button block round (click)="gotoExternal()">{{'landingPage.externalButton' | translate}} <i class="icon-arrow-right"></i> </button>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card class="internal" *ngIf="this.common.getInternalWeightage() > 10">
+    <ion-card-content>
+      <ion-row>
+        <ion-col col-12 text-center><ion-img width="166.5" height="72" src="assets/imgs/graphic-internal@3x.png"></ion-img></ion-col>
+      </ion-row>
+      <h5 text-center>{{'landingPage.internalMessage' | translate}} </h5>
+      <button class="bg-pink" ion-button block round (click)="gotoInternal()">{{'landingPage.internalButton' | translate}} <i class="icon-arrow-right"></i></button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

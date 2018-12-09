@@ -1,0 +1,41 @@
+<!-- <ion-header class="login">
+	<ion-item end class="language">
+		<ion-label ion-text color="light-gray" text-right ></ion-label>
+		<ion-select name="LanguageCulture" interface="action-sheet" small  [(ngModel)]="login.LanguageCulture">
+			<ion-option *ngFor="let language of languageList;" value="{{language.Culture}}">{{language.Name}}</ion-option>
+		</ion-select>
+	</ion-item>
+</ion-header> -->
+
+<ion-content padding class="login">
+	<ion-grid>
+		<form ion-row #loginForm="ngForm" (ngSubmit)="doLogin(login)" autocomplete="off">
+			<ion-col col-12 text-center><ion-img width="60" height="83.5" src="assets/imgs/logo.svg"></ion-img></ion-col>
+			<ion-col col-12>
+				<h4 center text-center ion-text color="dark-blue">Claim Application</h4>
+				<h5 center text-center ion-text color="gray">Sign in to your account </h5>
+				<ion-item no-padding>
+					<ion-icon  class="icon-user" name="" item-start></ion-icon>
+					<ion-input rounded name="username" placeholder="Username" type="email" required [(ngModel)]="login.username" #email></ion-input>
+				</ion-item>
+				<ion-item no-padding>
+					<ion-icon  class="icon-password" name=""  item-start></ion-icon>
+					<ion-input name="password" placeholder="Password" type="password" required [(ngModel)]="login.password"></ion-input>
+				</ion-item>
+				<ion-item no-padding>
+					<ion-label ion-text color="light-gray"></ion-label>
+					<ion-icon class="icon-domain" name="" item-start></ion-icon>
+					<ion-select interface="action-sheet" name="DomainID"  placeholder="Please Choose Domain" [(ngModel)]="login.DomainID">
+						<ion-option *ngFor="let domain of domainList;" value="{{domain.Id}}">{{domain.Name}}</ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item no-padding>
+					<ion-label>Remember Me & My Domain</ion-label>
+					<ion-checkbox color="secondary" name="rememberMe" [(ngModel)]="rememberMe"></ion-checkbox>
+				</ion-item>
+				<button ion-button round class="submit-btn" full type="submit">Login</button>
+			</ion-col>
+		</form>
+	</ion-grid>
+</ion-content>
+

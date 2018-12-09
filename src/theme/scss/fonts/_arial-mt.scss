@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Arial MT';
+    src: url($font_url+'arial-mt/ArialMT.eot?#iefix') format('embedded-opentype'),
+        url($font_url+'arial-mt/ArialMT.woff') format('woff'),
+        url($font_url+'arial-mt/ArialMT.ttf') format('truetype'),
+        url($font_url+'arial-mt/ArialMT.svg#ArialMT') format('svg');
+    font-weight: bolder;
+    font-style: normal;
+}

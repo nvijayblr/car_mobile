@@ -1,0 +1,175 @@
+{
+    "common": {
+        "select": "选择",
+        "cancel": "キャンセル",
+        "prev":"前の",
+        "saveasDraft":"下書きとして保存",
+        "submit":"提出する",
+        "next":"次",
+        "resetFormModal":"重置将清除保存前输入的所有值。你想继续吗？",
+        "yes":"是",
+        "no":"没有",
+        "close": "閉じる",
+        "delete": "削除",
+        "reset":"リセット",
+        "edit":"編集",
+        "logout": "ログアウト",
+        "deleteAttachment":"附件已成功删除",
+        "networkError": "おっとっと！何かが間違っていた",
+        "currentLanguage":"中文"
+    },
+    "header": {
+        "applicationName": "Claim Processing Application",
+        "logoutTitle": "登出",
+        "logoutMessage": "你确定要注销吗？",
+        "yesLable": "是",
+        "noLabel": "没有",
+        "claimsMenu": "CLAIMS",
+        "capaMenu": "CAPA",
+        "selectModule":"选择模块"
+    },
+    "landingPage": {
+        "externalMessage": "创建，查看和管理不同类型的声明，如消费者，客户和投诉等",
+        "internalMessage": "创建，查看和管理危险和事故声明和说明",
+        "externalButton": "外部",
+        "internalButton": "内部"
+    },
+    "dashboard":{
+        "pageHead":"内部仪表板",
+        "createNew":"内部仪表板",
+        "searchFor":"搜索",
+        "claim":"要求",
+        "recentClaims":"最近的索赔",
+        "selectClaimType": "クレームタイプの選択",
+        "accidentDeclaration": "事故宣告",
+        "hazardIdentification": "ハザード識別"
+    },
+    "searchPage": {
+        "searchClaim": "搜索索赔",
+        "searchResults": "搜索结果",
+        "reset": "重启",
+        "universalSearch": "通用搜索",
+        "fromDate": "日付から",
+        "toDate": "現在まで",
+        "claimsType": "理赔类型",
+        "claimStatus": "索赔状态",
+        "search": "搜索",
+        "employeeName": "员工姓名",
+        "referenceNo": "参考编号",
+        "recordsPerPage":"每页记录",
+        "gotoClaim":"申し立てに行く",
+        "noRecordsFound": "没有找到记录",
+        "toDateGreaterThanFrom": "启动日期”必须大于或等于“从日期启动"
+    },
+    "accident": {
+        "header": {
+            "newClaim":"新しい申し立て",
+            "claimDetails":"クレームの詳細"
+        },
+        "basic": {
+            "title": "基本细节",
+            "referenceNo": "参考编号",
+            "dateOfIncident": "事件发生的日期。",
+            "timeOfIncident": "事件的时间",
+            "injuredEmployeeName": "受伤雇员的姓名",
+            "employeeNo": "员工编号.",
+            "employementType": "类型的就业",
+            "employeeMiniCo": "员工迷你公司.",
+            "claimStatus": "索赔状态"
+        },
+        "incident": {
+            "title": "事件详情",
+            "sendTo": "发给",
+            "reportedBy": "事件报告人",
+            "location": "精确的位置，这一事件",
+            "description": "对事件的描述。",
+            "immediateActions": "事件现场立即采取行动",
+            "sendAdditionalEmail": "发送附加电子邮件给。",
+            "multipleEmail": "コンマで区切られた複数のメールIDを入力する"
+        },
+        "injury": {
+            "title": "损伤细节",
+            "injuryNature": "伤害的性质",
+            "injuryLocation": "伤害的位置",
+            "ppeWearingCorrect": "在受害者是正确佩戴个人防护装备？ 如果是这样，什么？",
+            "carClosedBy": "车载闭合的",
+            "carClosedDate": "汽车关闭日期",
+            "attachPhoto": "附上照片",
+            "browse":"ブラウズ",
+            "fileAdded": "文件已添加",
+            "noImage":"未选择图像",
+            "fileNames":"文件名称",
+            "description":"描述"
+        },
+        "validation": {
+            "dateOfIncident": "インシデント日付を選択してください",
+            "timeOfIncident": "インシデント時間を選択してください",
+            "incidentDateTime": "事件日期和時間不應大於當前日期和時間",
+            "employeeName": "従業員の名前を入力してください",
+            "employeeNo": "従業員番号を入力してください",
+            "employementType": "職種を選択してください",
+            "sendTo": "送信先を選択してください",
+            "reportedBy": "インシデント報告者に入力してください",
+            "location": "インシデントの正確な場所を入力してください",
+            "description": "インシデントの説明を入力してください",
+            "validEmail": "有効なメールIDを入力してください",
+            "injuryNature": "傷害の性質を選択してください",
+            "injuryLocation": "傷害の場所を選択してください",
+            "dateOfIncidentToaster": "事件发生日期应小于或等于汽车关闭日期",
+            "claim":"要求 ",
+            "saveSuccess":" 保存成功",
+            "updateSuccess":" 更新成功",
+            "submitSuccess":" 成功提交"
+        }
+    },
+    "hazard": {
+        "header": {
+            "newClaim":"新索赔",
+            "claimDetails":"索赔详情"
+        },
+        "basic": {
+            "title": " 基本细节",
+            "referenceNo": "参考编号",
+            "dateOfObservation": "观察日期",
+            "employeeName": "员工请求行动的名称",
+            "employeeNo": "员工号",
+            "employeeMiniCo": "员工迷你公司",
+            "claimStatus": "索赔状态"
+        },
+        "hazard": {
+            "title": "危害详情",
+            "location": "事件的精确位置",
+            "natureOfHazard": "危害的性质",
+            "description": "危害描述"
+        },
+        "action": {
+            "title": "纠正措施",
+            "correctiveActionRequested": "要求采取纠正措施",
+            "sendTo": "发给",
+            "estimatedPriority": "预计优先级",
+            "sendAdditionalEmail": "发送附加电子邮件给",
+            "multipleEmail": "输入用逗号分隔的多个电子邮件ID",
+            "carClosedBy": "CAR关闭",
+            "carClosedDate": "汽车关闭日期",
+            "attachPhoto": "附上照片",
+            "fileAdded": "文件已添加",
+            "browse":"浏览"
+        },
+        "validation": {
+            "dateOfObservation": "请选择观察日期",
+            "employeeName": "请输入员工姓名",
+            "location": "请输入事件的精确位置",
+            "natureOfHazard": "请选择危害性质",
+            "description": "请输入危险描述.",
+            "correctiveActionRequested": "请输入请求的纠正措施",
+            "sendTo": "请选择发送至",
+            "estimatedPriority": "请选择预计优先级",
+            "validEmail": "请输入有效的电子邮件ID",
+            "dateOfIncidentToaster": "事件发生日期应小于或等于汽车关闭日期",
+            "claim":"要求 ",
+            "saveSuccess":" 保存成功",
+            "updateSuccess":" 更新成功",
+            "submitSuccess":" 成功提交"
+        }
+    }
+}

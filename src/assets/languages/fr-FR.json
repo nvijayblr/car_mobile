@@ -1,0 +1,175 @@
+{
+    "common": {
+        "select": "Sélectionner",
+        "cancel": "Annuler",
+        "prev":"précé",
+        "saveasDraft":"Enregistrer",
+        "submit":"Soumettre",
+        "next":"Prochain",
+        "resetFormModal":"Réinitialiser effacera toutes les valeurs entrées avant la sauvegarde. Voulez-vous continuer?",
+        "yes":"Oui",
+        "no":"Non",
+        "close": "Fermer",
+        "delete": "Effacer",
+        "reset":"Réinitialiser",
+        "edit":"modifier",
+        "logout": "Connectez - Out",
+        "deleteAttachment":"Pièce jointe supprimée avec succès.",
+        "networkError": "Oops! quelque chose a mal tourné.",
+        "currentLanguage":"français"
+    },
+    "header": {
+        "applicationName": "Claim Processing Application",
+        "logoutTitle": "Connectez - Out",
+        "logoutMessage": "Êtes-vous sûr de vouloir vous déconnecter?",
+        "yesLable": "Oui",
+        "noLabel": "Non",
+        "claimsMenu": "CLAIMS",
+        "capaMenu": "CAPA",
+        "selectModule":"Sélectionnez module"
+    },
+    "landingPage": {
+        "externalMessage": "Créez, visualisez et gérez différents types de prétentions comme le consommateur, le client et les compliants, etc.",
+        "internalMessage": "Créer, afficher et gérer la déclaration des risques et accidents et l'autorisation",
+        "externalButton": "Externe",
+        "internalButton": "Interne"
+    },
+    "dashboard":{
+        "pageHead":"Interne tableau de bord",
+        "createNew":"Créer Nouveau",
+        "searchFor":"Chercher pour",
+        "claim":"Prétendre",
+        "recentClaims":"Recent réclamations",
+        "selectClaimType": "Sélectionnez le type de réclamation",
+        "accidentDeclaration": "Déclaration d'accident",
+        "hazardIdentification": "Identification des dangers"
+    },
+    "searchPage": {
+        "searchClaim": "Rechercher des réclamations",
+        "searchResults": "Résultats de la recherche",
+        "reset": "Réinitialiser",
+        "universalSearch": "Recherche universelle",
+        "fromDate": "Partir de la date",
+        "toDate": "À ce jour",
+        "claimsType": "Type de prétentions",
+        "referenceNo": "N° de référence",
+        "claimStatus": "Statut de réclamation",
+        "Search": "Chercher",
+        "employeeName": "Nom de l'employé",
+        "recordsPerPage":" enregistrements par page",
+        "gotoClaim":"Aller à réclamer",
+        "noRecordsFound": "Aucun enregistrement trouvé",
+        "toDateGreaterThanFrom": "L'initiation à ce jour doit être supérieure ou égale à l'initiation à la date de début"
+    },
+    "accident": {
+        "header": {
+            "newClaim":"Nouvelle réclamation",
+            "claimDetails":"Détails de réclamation"
+        },
+        "basic": {
+            "title": "Détails de base",
+            "referenceNo": "N° de référence",
+            "dateOfIncident": "Date de l'incident",
+            "timeOfIncident": "L'heure de l'incident",
+            "injuredEmployeeName": "Nom de l'employé blessé",
+            "employeeNo": "N° employé.",
+            "employementType": "Type d'emploi",
+            "employeeMiniCo": "Mini-Co employé.",
+            "claimStatus": "Statut de réclamation"
+        },
+        "incident": {
+            "title": "Détails de l'incident",
+            "sendTo": "Envoyer à",
+            "reportedBy": "Incident signalé par",
+            "location": "Localisation précise de l'incident",
+            "description": "Description de l'incident",
+            "immediateActions": "Actions immédiates réalisées sur les lieux de l'incident",
+            "sendAdditionalEmail": "Envoyer un email à supplémentaires",
+            "multipleEmail": "Entrez plusieurs ID d'e-mail séparés par une virgule"
+        },
+        "injury": {
+            "title": "Détails des blessures",
+            "injuryNature": "Nature de la blessure",
+            "injuryLocation": "Lieu de la blessure",
+            "ppeWearingCorrect": "La victime était le port de l'EPI approprié ? Si oui, quoi ?",
+            "carClosedBy": "CAR fermé par",
+            "carClosedDate": "Date de fermeture de la voiture",
+            "attachPhoto": "Joindre un fichier",
+            "browse":"Feuilleter",
+            "fileAdded": "Fichier ajouté",
+            "noImage":"Aucune image sélectionnée",
+            "fileNames":"Noms de fichiers",
+            "description":"La description"
+        },
+        "validation": {
+            "dateOfIncident": "Veuillez choisir la date de l'incident.",
+            "timeOfIncident": "Veuillez choisir l'heure de l'incident.",
+            "incidentDateTime": "La date et l'heure de l'incident ne doivent pas dépasser la date et l'heure actuelles.",
+            "employeeName": "Veuillez entrer le nom de l'employé.",
+            "employeeNo": "Veuillez entrer le numéro d'employé",
+            "employementType": "Veuillez sélectionner le type d'emploi.",
+            "sendTo": "Veuillez choisir Envoyé à.",
+            "reportedBy": "Veuillez entrer Incident signalé par.",
+            "location": "Veuillez entrer l'emplacement précis de l'incident.",
+            "description": "Veuillez entrer la description de l'incident.",
+            "validEmail": "S'il vous plaît entrer des e-mails valides.",
+            "injuryNature": "S'il vous plaît choisissez Nature of Injury.",
+            "injuryLocation": "Veuillez choisir l'emplacement de la blessure.",
+            "dateOfIncidentToaster": "La date de l'incident devrait être inférieure ou égale à la date d'expiration du RAC",
+            "claim":"Prétendre ",
+            "saveSuccess":" Enregistré avec succès.",
+            "updateSuccess":" Mis à jour avec succés.",
+            "submitSuccess":" Soumis avec succès."
+        }
+    },
+    "hazard": {
+        "header": {
+            "newClaim":"Nouvelle réclamation",
+            "claimDetails":"Détails de réclamation"
+        },
+        "basic": {
+            "title": " Détails de base",
+            "referenceNo": "Numéro de réference",
+            "dateOfObservation": "Date d'observation",
+            "employeeName": "Nom de l'employé demandant une action",
+            "employeeNo": "Numéro d'employé.",
+            "employeeMiniCo": "Employé Mini-Co.",
+            "claimStatus": "Statut de réclamation"
+        },
+        "hazard": {
+            "title": "Détails de danger",
+            "location": "Emplacement précis de l'incident",
+            "natureOfHazard": "Nature du danger",
+            "description": "Description du danger"
+        },
+        "action": {
+            "title": "Action corrective",
+            "correctiveActionRequested": "Action corrective requise",
+            "sendTo": "Envoyer à",
+            "estimatedPriority": "Priorité estimée",
+            "sendAdditionalEmail": "Envoyer un e-mail supplémentaire à",
+            "multipleEmail": "Entrez plusieurs ID d'e-mail séparés par une virgule",
+            "carClosedBy": "CAR fermé par",
+            "carClosedDate": "Date de fermeture de la voiture",
+            "attachPhoto": "Joindre une photo",
+            "fileAdded": "Fichier ajouté",
+            "browse":"Feuilleter"
+        },
+        "validation": {
+            "dateOfObservation": "Veuillez choisir la date d'observation",
+            "employeeName": "Veuillez entrer le nom de l'employé.",
+            "location": "Veuillez entrer l'emplacement précis de l'incident.",
+            "natureOfHazard": "Veuillez choisir Nature of Hazard.",
+            "description": "Veuillez entrer la description du danger.",
+            "correctiveActionRequested": "Veuillez entrer les actions correctives requises.",
+            "sendTo": "Veuillez choisir Envoyé à.",
+            "estimatedPriority": "Veuillez choisir la priorité estimée.",
+            "validEmail": "S'il vous plaît entrer des e-mails valides.",
+            "dateOfIncidentToaster": "La date de l'incident devrait être inférieure ou égale à la date d'expiration du RAC",
+            "claim":"Prétendre ",
+            "saveSuccess":" Enregistré avec succès.",
+            "updateSuccess":" Mis à jour avec succés.",
+            "submitSuccess":" Soumis avec succès."
+        }
+    }
+}

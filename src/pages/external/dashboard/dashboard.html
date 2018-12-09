@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+      <ion-buttons left (click)="gotoBackPage()">
+        <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+      </ion-buttons>
+      
+      <ion-title text-center>External Dashboard</ion-title>
+      
+      <ion-buttons end (click)="presentPopover()">
+          <button ion-button><ion-icon class="icon-user" name=""></ion-icon></button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding  class="bg-shade dashboard">
+  <ion-row>
+    <ion-col col-6 *ngIf="this.common.getExternalWeightage() > 20">
+      <ion-card class="btn-create-claim"  (click)="gotoCreateClaim()">
+        <ion-card-content>
+          <i class="icon-claim"></i>
+          <span ion-row>Create New</span>
+          <strong ion-row>Claim</strong>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col col-6>
+      <ion-card class="btn-search"  (click)="gotoSearchClaim()">
+        <ion-card-content>
+          <i class="icon-search"></i>
+          <span ion-row>Search for</span>
+          <strong ion-row>Claim</strong>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <h6 col-12>Recent Claims</h6>
+  <ion-list ion-row class="recent-claims">
+    <ion-item col col-12 *ngFor="let claim of claimsList" (click)="gotoClaimPage(claim.ComplaintNumber)">
+      <h2>{{claim.ComplaintNumber}}</h2>
+      <p> <i class="status-{{claim.Status}}"></i> {{claim.Status}}</p>
+      <p item-right class="amt-clm amount-clm-p"> 
+        <span class="amound">{{claim.Amount}} </span> 
+            </p>
+             <p item-right class="amt-clm"> 
+        <span class="currency">{{claim.currency}}</span>
+</p>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

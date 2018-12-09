@@ -1,0 +1,20 @@
+<ion-content  class="popover-page">
+	<h3>{{userName}}<ion-icon class="icon-user"></ion-icon></h3>
+
+<ion-list class="br-bottom">
+  <ion-item>
+    <!-- <ion-label>{{languageName}}</ion-label> -->
+    <ion-select class="ion-sel-lang" interface="action-sheet" [(ngModel)]="languageCulture" (ngModelChange)="languageChanged()">
+        <ion-option *ngFor="let language of languageList;" value="{{language.Culture}}">{{language.Name}}</ion-option>
+      
+    </ion-select>
+  </ion-item>
+</ion-list>
+
+  <h4 *ngIf="moduleName!='External'" (click)="viewCtrl.dismiss(); common.http.doLogout()">{{'common.logout' | translate}}<ion-icon class="icon-logout"></ion-icon></h4>
+
+
+
+  <h4 *ngIf="moduleName=='External'" (click)="viewCtrl.dismiss(); common.http.doLogout()">Logout<ion-icon class="icon-logout"></ion-icon></h4>
+
+</ion-content>

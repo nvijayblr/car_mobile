@@ -1,0 +1,23 @@
+ion-header{
+    ion-buttons{
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    ion-navbar{
+        ion-title{
+            .toolbar-title{
+                color:#312857 !important;
+                font-weight: 400 !important;
+            }
+        }
+        ion-buttons{
+            button{
+                color:#312857 !important;
+            }    
+        }
+    }
+    &:after{
+        opacity: 0.4;
+    }
+}
+

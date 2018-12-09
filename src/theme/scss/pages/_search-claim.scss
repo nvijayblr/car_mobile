@@ -1,0 +1,22 @@
+.search-claim{
+    ion-list{
+        ion-item{
+            padding-left:1rem !important;
+            padding-right:1rem !important;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px 0 rgba(59, 59, 97, 0.05);
+
+            .item-inner{
+                border-bottom: none !important;
+            }
+        }
+    }
+}
+
+.search-result{
+    ion-item{
+        .expandable{
+            overflow: hidden;
+        }
+    }
+}

@@ -1,0 +1,108 @@
+page-internal-search {
+    .expandable label {
+        display: block;
+        padding: 0 0 5px 5px;
+        color: #777;
+    }
+    .no-of-recrods {
+        margin-bottom: 10px;
+    }
+    .expand-wrapper .expandable {
+        height: 0;
+        transition: 0.09s all linear;
+    }
+    .expand-wrapper.active .expandable {
+        height: 190px;
+        transition: 0.09s all linear;
+    }
+    .updown-arrow {
+        margin-top: 0 !important;
+    }
+    .item-md p {
+        margin-top:5px;
+    }
+    .claim-button .button-inner {
+    color: #368ef8;
+    text-transform: capitalize;
+  }
+}
+
+.search-result-bg {
+        background-color: #f0f5f9 !important;
+}
+.search-result-bg .item-md .item-button {
+    height: 35px;
+}
+.pagination {
+    list-style: none;
+        padding: 0;
+        li {
+          display: inline-block;
+    border: 1px solid #cccccc;
+    padding: 5px 8px;
+            a {
+                text-decoration: none;
+            }
+        }
+        .pagination-prev {
+            display: none;
+        }
+        .pagination-next {
+            display: none;
+        }
+        .active {
+    background-color: #007bff;
+    border-color: #007bff;
+    a {
+        color: #fff;
+        }
+    }
+}
+.search-result-bg {
+.expand-wrapper {
+margin: 0 0 10px 0;
+    border: none;
+    .item-inner {
+        border: none;
+    }
+    h2 {
+        color: #312857;
+    }
+    .icon-arrow-down {
+            font-size: 1rem;
+    color: #312857;
+    border: 1px solid #312857;
+    border-radius: 50%;
+    padding: 3px;
+    }
+    .expandable .col {
+color: rgba(49, 40, 87, 0.6);
+    }
+}
+.item-ios.item-block .item-inner {
+    border:none;
+    }
+    .list-ios > .item-block:first-child {
+        border:none;
+}
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+       border:none;
+}
+.list-ios {
+    margin: -1px 0 10px;
+}
+}
+
+.search-claim .list-ios > .item-block:first-child {
+    border-top: none;
+}
+.search-claim .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: none;
+}
+.no-pad {
+    padding: 0 0 0 10px !important;
+}
+
+.no-pad .item-inner {
+  padding: 0 !important;
+}

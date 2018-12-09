@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+      <ion-buttons left (click)="gotoBackPage()">
+        <button ion-button><ion-icon  class="icon-arrow-left" name=""></ion-icon></button>
+      </ion-buttons>
+      
+      <ion-title text-center>{{'dashboard.pageHead' | translate}} </ion-title>
+      
+      <ion-buttons end (click)="presentPopover()">
+          <button ion-button><ion-icon class="icon-user" name=""></ion-icon></button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding  class="bg-shade dashboard">
+  <ion-row>
+    <ion-col col-6 *ngIf="this.common.getInternalWeightage() > 20">
+      <ion-card class="btn-create-claim"  (click)="gotoCreateClaim()">
+        <ion-card-content>
+          <i class="icon-claim"></i>
+          <span ion-row>{{'dashboard.createNew' | translate}}</span>
+          <strong ion-row>{{'dashboard.claim' | translate}}</strong>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col col-6>
+      <ion-card class="btn-search" (click)="gotoSearchClaim()">
+        <ion-card-content>
+          <i class="icon-search"></i>
+          <span ion-row>{{'dashboard.searchFor' | translate}}</span>
+          <strong ion-row>{{'dashboard.claim' | translate}}</strong>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <h6 col-12>{{'dashboard.recentClaims' | translate}}</h6>
+  <ion-list ion-row class="recent-claims">
+    <ion-item col col-12 *ngFor="let claim of claimsList" (click)="gotoClaimPage(claim.ClaimTypeId, claim.ReferenceNo)">
+      <h2>{{claim.ReferenceNo}}</h2>
+      <p> <i class="status-{{claim.ClaimStatus}}"></i> {{claim.ClaimStatus}}</p>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

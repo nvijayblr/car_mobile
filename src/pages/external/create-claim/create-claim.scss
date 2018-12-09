@@ -1,0 +1,169 @@
+page-create-claim {
+  .custom-file-input {
+    visibility: visible;
+    position: absolute;
+    overflow: hidden;
+    width: 170px;
+    height: 33px;
+    border: none;
+    margin: 0;
+    padding: 0;
+    opacity: 1;
+    top: 17px;
+    z-index: 1000;
+    opacity: 0;
+  }
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: none;
+}
+  .slide-zoom {
+	  height: 100%;
+  }
+  .button-md-light {
+    background-color: transparent;
+    box-shadow: none;
+}
+  span.required {
+  	color: #d73a49;
+    margin-left: 2px;
+    position: relative;
+    top: -1px;
+  }
+  .item-md-error ion-label {
+  	color: #d73a49 !important;
+  }
+  .item-md-error .item-inner {
+  	border-bottom-color: #d73a49 !important;
+  }
+  .item-ios-error .item-inner {
+    border-bottom-color: #d73a49 !important;
+  }
+  .list-md .item-input.item-md-error:last-child {
+    border-bottom-color: #d73a49 !important;
+    box-shadow: inset 0 -1px 0 0 transparent !important;
+  }
+  .view-claim .text-input[disabled] {
+    opacity: 1;
+    color: #312857 !important;
+    font-size: 13px;
+
+  }
+  .view-claim .select-disabled, .item-select-disabled ion-label {
+    opacity: 1;
+  }
+  .view-claim .datetime-disabled, .view-claim .item-datetime-disabled ion-label {
+    opacity: 1;
+  }
+  .view-claim .item-md.item-toggle-disabled ion-label {
+    opacity: 1;
+    font-size: 13px;
+  }
+  .view-claim .item-md.item-radio-disabled ion-label {
+    opacity: 1;
+    font-size: 13px;
+  }
+  .view-claim .list-ios .item-block .item-inner {
+    border-bottom: none;
+}
+.view-claim .list-md .item-block .item-inner {
+    border-bottom: none;
+}
+.view-claim ion-select {
+      color: #312857 !important;
+}
+    .claim-button .button-inner {
+    color: #368ef8;
+  }
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #312857 !important;
+    }
+    .datetime-text {
+      color: #312857 !important;
+      font-weight: 500;
+    }
+  .item-button {
+        position: relative;
+      top: 14px;
+  }
+  .view-claim .scroll-content {
+    padding: 5px !important;
+
+    h3 {
+    color: #312857;
+    font-weight: 500;
+    font-size: 1.8rem;
+    margin: 0;
+    }
+    .card {
+      margin-top:12px !important;
+    }
+    }
+    .edit-page h3 {
+          color: #312857;
+        font-weight: 500;
+        font-size: 1.8rem;
+        margin: 0;
+    }
+    .edit-page .scroll-content {
+        padding: 5px !important;
+    }
+    .edit-page .card {
+      margin-top:12px !important;
+    }
+    ios.toggle-disabled, .item-ios.item-toggle-disabled ion-label {
+        font-size: 13px;
+    }
+    .item-ios .toggle-ios {
+        padding: 6px 0px 5px 16px;
+    }    
+    .card-ios .item-ios.item-block .item-inner {
+        padding-right: 0;
+    }
+    .item-ios .toggle-ios {
+      height: 22px;
+    }
+    .toggle-ios .toggle-inner {
+      height: 18px;
+    }
+    .button-ios-light {
+        background-color: transparent;
+    }
+    .item[no-lines], .item.item[no-lines] .item-inner {
+      border: inherit !important;
+    }
+    .item-cost .text-input {
+      margin-left: 0 !important;
+    }
+    .item-cost.item-input .label-md {
+      margin-right: 3px;
+    }
+    .label-ios + ion-input .text-input, .label-ios + ion-textarea .text-input, .label-ios + .input + .cloned-input {
+        margin-left: 0 !important;
+    }
+    .radio-ios.radio-disabled, .item-ios.item-radio-disabled ion-label {
+        font-size: 12px;
+    }
+    ion-label {
+        margin: 11px 3px 11px 0 !important;
+    }
+}
+
+     .platform-android .claim ion-segment-button {
+        font-size: 50% !important;
+
+    }
+
+.edit-page .list-md .item-md-error .item-inner {
+     border-bottom: 1px solid #d73a49 !important; 
+}
+
+.edit-page .list-ios .item-ios-error .item-inner {
+    border-bottom: 1px solid #d73a49 !important;
+}
+
+.edit-page .item-ios-error .label-ios {
+  color: #d73a49 !important;
+}
+.platform-android .saveas-btn {
+
+}
